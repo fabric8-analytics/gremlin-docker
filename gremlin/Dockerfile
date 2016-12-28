@@ -1,4 +1,4 @@
-FROM registry.centos.org/containscafeine/centos-java:concaf
+FROM registry.centos.org/datamodel/centos-java:concaf
 
 MAINTAINER Shubham <shubham@linux.com>
 

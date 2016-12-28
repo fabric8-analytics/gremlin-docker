@@ -1,4 +1,4 @@
-FROM registry.centos.org/containscafeine/gremlin:concaf
+FROM registry.centos.org/datamodel/gremlin:concaf
 
 MAINTAINER Shubham <shubham@linux.com>
 
