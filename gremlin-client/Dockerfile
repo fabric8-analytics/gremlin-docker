@@ -6,7 +6,7 @@ ENV SERVER_DIR=/opt/dynamodb/dynamodb-titan-storage-backend/server/dynamodb-tita
     GREMLIN_HOST=gremlin
 
 RUN yum -y install epel-release &&\
-    yum -y install python-pip ipython &&\
+    yum -y install python-pip ipython nss_wrapper gettext &&\
     yum clean all &&\
     pip install gremlinrestclient gremlinpython
 
@@ -14,7 +14,8 @@ RUN sed -i.bckp 's#hosts: .*#hosts: ['$GREMLIN_HOST']#' "${SERVER_DIR}/conf/remo
     cd ${SERVER_DIR} &&\
     echo ":remote connect tinkerpop.server conf/remote.yaml" | bin/gremlin.sh 2>/dev/null
 
-ADD scripts/entrypoint-client.sh /bin/entrypoint.sh
+COPY scripts/entrypoint-client.sh /bin/entrypoint.sh
+COPY scripts/passwd.template /tmp/
 
 RUN chmod +x /bin/entrypoint.sh
 
