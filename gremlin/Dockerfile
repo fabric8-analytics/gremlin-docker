@@ -7,10 +7,19 @@ EXPOSE 8182
 RUN yum -y install git zip unzip &&\
 		yum clean all
 
+RUN curl -o /opt/titan-1.1.0-SNAPSHOT-hadoop2.zip https://s3.amazonaws.com/bayesian-titan110/titan-1.1.0-SNAPSHOT-hadoop2.zip
+RUN curl -O https://s3.amazonaws.com/bayesian-titan110/titan-all.tgz &&\
+    tar xzf titan-all.tgz
+
 # Prep, build and install DynamoDB storage backend driver with support for titan, and install Gremlin server
 RUN git clone https://github.com/awslabs/dynamodb-titan-storage-backend.git /opt/dynamodb/dynamodb-titan-storage-backend/ &&\
     cd /opt/dynamodb/dynamodb-titan-storage-backend/ &&\
-    mvn install &&\
+    curl https://gist.githubusercontent.com/pluradj/d56c1948f4665ee7fb1bc35daeba4f92/raw/be5f639a64c8d6ac196c59eb7e6d1a1903015b17/dynamo-titan11-tp323.patch | git apply -v --index &&\
+    mvn install
+
+
+RUN cd /opt/dynamodb/dynamodb-titan-storage-backend/ &&\
+    sed -i 's#TITAN_VANILLA_SERVER_ZIP=.*#TITAN_VANILLA_SERVER_ZIP=/opt/titan-1.1.0-SNAPSHOT-hadoop2.zip#' src/test/resources/install-gremlin-server.sh &&\
     src/test/resources/install-gremlin-server.sh
 
 WORKDIR /opt/dynamodb/
