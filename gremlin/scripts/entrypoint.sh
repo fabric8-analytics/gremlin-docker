@@ -20,6 +20,10 @@ if [ "$REST" == "1" ]; then
     sed -i.bckp 's#channelizer: .*#channelizer: org.apache.tinkerpop.gremlin.server.channel.HttpChannelizer#' ${GREMLIN_CONF}
 fi
 
+if [ -n "$DYNAMODB_PREFIX" ]; then
+    sed -i.bckp 's#storage.dynamodb.prefix=.*#storage.dynamodb.prefix='$DYNAMODB_PREFIX'#' ${PROPS}
+fi
+
 cd ${SERVER_DIR}
 
 sleep 20
