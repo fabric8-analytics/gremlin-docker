@@ -14,6 +14,7 @@ RUN curl -O https://s3.amazonaws.com/bayesian-titan110/titan-all.tgz &&\
 # Prep, build and install DynamoDB storage backend driver with support for titan, and install Gremlin server
 RUN git clone https://github.com/awslabs/dynamodb-titan-storage-backend.git /opt/dynamodb/dynamodb-titan-storage-backend/ &&\
     cd /opt/dynamodb/dynamodb-titan-storage-backend/ &&\
+    git checkout d1a59624dcef796b835e7ffb41f0a3f007008d63 -b "last-working" &&\
     curl https://gist.githubusercontent.com/pluradj/d56c1948f4665ee7fb1bc35daeba4f92/raw/be5f639a64c8d6ac196c59eb7e6d1a1903015b17/dynamo-titan11-tp323.patch | git apply -v --index &&\
     mvn install
 
