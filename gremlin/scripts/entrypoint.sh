@@ -6,13 +6,15 @@ GREMLIN_CONF=${SERVER_DIR}/conf/gremlin-server/gremlin-server.yaml
 GREMLIN_HOST=$HOSTNAME
 SCRIPT_EVALUATION_TIMEOUT=300000
 RESPONSE_TIMEOUT=300000
-export JAVA_OPTIONS="-Xms8192m -Xmx8192m -javaagent:/opt/dynamodb/$SERVER_DIR/lib/jamm-0.3.0.jar"
+THREAD_POOL = 1 
+export JAVA_OPTIONS="-Xms2048m -Xmx2048m -javaagent:/opt/dynamodb/$SERVER_DIR/lib/jamm-0.3.0.jar"
 
 sed -i.bckp 's#host: .*#host: '$GREMLIN_HOST'#' ${GREMLIN_CONF}
 sed -i.bckp 's#storage.dynamodb.client.credentials.class-name=.*#storage.dynamodb.client.credentials.class-name='$1'#' ${PROPS}
 sed -i.bckp 's#storage.dynamodb.client.credentials.constructor-args=.*#storage.dynamodb.client.credentials.constructor-args='$2'#' ${PROPS}
 sed -i.bckp 's#serializedResponseTimeout: .*#serializedResponseTimeout: '${RESPONSE_TIMEOUT}'#' ${GREMLIN_CONF}
 sed -i.bckp 's#scriptEvaluationTimeout: .*#scriptEvaluationTimeout: '${SCRIPT_EVALUATION_TIMEOUT}'#' ${GREMLIN_CONF}
+sed -i.bckp 's#threadPoolWorker: .*#threadPoolWorker: '${THREAD_POOL}'#' ${GREMLIN_CONF}
 
 if [ -v aws_region ]; then
   sed -i.bckp 's#storage.dynamodb.client.endpoint=.*#storage.dynamodb.client.endpoint='$aws_region'#' ${PROPS}
