@@ -18,6 +18,10 @@ if [ -n "$SCRIPT_EVALUATION_TIMEOUT" ]; then
     sed -i.bckp 's#scriptEvaluationTimeout: .*#scriptEvaluationTimeout: '${SCRIPT_EVALUATION_TIMEOUT}'#' ${GREMLIN_CONF}
 fi
 
+if [ -n "$GREMLIN_POOL" ]; then
+    sed -i.bckp 's#gremlinPool: .*#gremlinPool: '${GREMLIN_POOL}'#' ${GREMLIN_CONF}
+fi
+
 if [ -n "$THREAD_POOL" ]; then
     sed -i.bckp 's#threadPoolWorker: .*#threadPoolWorker: '${THREAD_POOL}'#' ${GREMLIN_CONF}
 fi
