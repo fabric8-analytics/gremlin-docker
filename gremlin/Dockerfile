@@ -40,4 +40,3 @@ RUN chmod +x /bin/entrypoint.sh &&\
 
 ENTRYPOINT ["/bin/entrypoint.sh"]
 
-CMD ${dynamodb_class_name} ${dynamodb_constructor_args}

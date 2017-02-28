@@ -7,8 +7,14 @@ GREMLIN_HOST=$HOSTNAME
 export JAVA_OPTIONS="-Xms2048m -Xmx2048m -javaagent:/opt/dynamodb/$SERVER_DIR/lib/jamm-0.3.0.jar"
 
 sed -i.bckp 's#host: .*#host: '$GREMLIN_HOST'#' ${GREMLIN_CONF}
-sed -i.bckp 's#storage.dynamodb.client.credentials.class-name=.*#storage.dynamodb.client.credentials.class-name='$1'#' ${PROPS}
-sed -i.bckp 's#storage.dynamodb.client.credentials.constructor-args=.*#storage.dynamodb.client.credentials.constructor-args='$2'#' ${PROPS}
+
+if [ -n "$DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME" ]; then
+    sed -i.bckp 's#storage.dynamodb.client.credentials.class-name=.*#storage.dynamodb.client.credentials.class-name='${DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME}'#' ${PROPS}
+fi
+
+if [ -n "$DYNAMODB_CLIENT_CREDENTIALS_CONSTRUCTOR_ARGS" ]; then
+    sed -i.bckp 's#storage.dynamodb.client.credentials.constructor-args=.*#storage.dynamodb.client.credentials.constructor-args='${DYNAMODB_CLIENT_CREDENTIALS_CONSTRUCTOR_ARGS}'#' ${PROPS}
+fi
 
 if [ -n "$RESPONSE_TIMEOUT" ]; then
     sed -i.bckp 's#serializedResponseTimeout: .*#serializedResponseTimeout: '${RESPONSE_TIMEOUT}'#' ${GREMLIN_CONF}
@@ -26,8 +32,8 @@ if [ -n "$THREAD_POOL" ]; then
     sed -i.bckp 's#threadPoolWorker: .*#threadPoolWorker: '${THREAD_POOL}'#' ${GREMLIN_CONF}
 fi
 
-if [ -v aws_region ]; then
-  sed -i.bckp 's#storage.dynamodb.client.endpoint=.*#storage.dynamodb.client.endpoint='$aws_region'#' ${PROPS}
+if [ -v "$DYNAMODB_CLIENT_ENDPOINT" ]; then
+  sed -i.bckp 's#storage.dynamodb.client.endpoint=.*#storage.dynamodb.client.endpoint='${DYNAMODB_CLIENT_ENDPOINT}'#' ${PROPS}
 fi
 
 if [ "$REST" == "1" ]; then
