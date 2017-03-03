@@ -38,5 +38,8 @@ RUN chmod +x /bin/entrypoint.sh &&\
     chmod -R g+rw /opt/dynamodb/ &&\
     find /opt/dynamodb/ -type d -exec chmod g+x {} +
 
+# We have already built everything, so remove the local repo now
+RUN rm -rf /root/.m2
+
 ENTRYPOINT ["/bin/entrypoint.sh"]
 
