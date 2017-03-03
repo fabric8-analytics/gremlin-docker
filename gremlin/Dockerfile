@@ -38,5 +38,8 @@ RUN chmod +x /bin/entrypoint.sh &&\
     chmod -R g+rw /opt/dynamodb/ &&\
     find /opt/dynamodb/ -type d -exec chmod g+x {} +
 
+# We have already built everything, so remove the local repo now
+RUN rm -rf /root/.m2 /titan-all.tgz /opt/titan-1.1.0-SNAPSHOT-hadoop2.zip /opt/dynamodb/dynamodb-titan-storage-backend/server/dynamodb-titan100-storage-backend-1.0.0-hadoop1.zip
+
 ENTRYPOINT ["/bin/entrypoint.sh"]
 
