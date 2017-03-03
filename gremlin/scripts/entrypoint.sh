@@ -4,7 +4,12 @@ SERVER_DIR=dynamodb-titan-storage-backend/server/dynamodb-titan100-storage-backe
 PROPS=${SERVER_DIR}/conf/gremlin-server/dynamodb.properties
 GREMLIN_CONF=${SERVER_DIR}/conf/gremlin-server/gremlin-server.yaml
 GREMLIN_HOST=$HOSTNAME
-export JAVA_OPTIONS="-Xms2048m -Xmx2048m -javaagent:/opt/dynamodb/$SERVER_DIR/lib/jamm-0.3.0.jar"
+
+export JAVA_OPTIONS=${JAVA_OPTIONS:- -Xms512m -Xmx2048m}
+
+export JAVA_OPTIONS="$JAVA_OPTIONS -javaagent:/opt/dynamodb/$SERVER_DIR/lib/jamm-0.3.0.jar"
+
+echo "Proceeding with JAVA_OPTIONS=$JAVA_OPTIONS"
 
 sed -i.bckp 's#host: .*#host: '$GREMLIN_HOST'#' ${GREMLIN_CONF}
 
