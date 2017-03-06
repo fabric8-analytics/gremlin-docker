@@ -3,7 +3,7 @@
 SERVER_DIR=dynamodb-titan-storage-backend/server/dynamodb-titan100-storage-backend-1.0.0-hadoop1/
 PROPS=${SERVER_DIR}/conf/gremlin-server/dynamodb.properties
 GREMLIN_CONF=${SERVER_DIR}/conf/gremlin-server/gremlin-server.yaml
-GREMLIN_HOST=$HOSTNAME
+GREMLIN_HOST=0.0.0.0
 
 export JAVA_OPTIONS=${JAVA_OPTIONS:- -Xms512m -Xmx2048m}
 
