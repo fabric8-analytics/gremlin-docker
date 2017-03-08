@@ -49,6 +49,22 @@ if [ -n "$DYNAMODB_PREFIX" ]; then
     sed -i.bckp 's#storage.dynamodb.prefix=.*#storage.dynamodb.prefix='$DYNAMODB_PREFIX'#' ${PROPS}
 fi
 
+if [ -n "$WRITE_UNITS" ]; then
+    sed -i.bckp 's#storage.dynamodb.stores.edgestore.capacity-write=.*#storage.dynamodb.stores.edgestore.capacity-write='$WRITE_UNITS'#' ${PROPS}
+    sed -i.bckp 's#storage.dynamodb.stores.graphindex.capacity-write=.*#storage.dynamodb.stores.graphindex.capacity-write='$WRITE_UNITS'#' ${PROPS}
+else
+    sed -i.bckp 's#storage.dynamodb.stores.edgestore.capacity-write=.*#storage.dynamodb.stores.edgestore.capacity-write=25#' ${PROPS}
+    sed -i.bckp 's#storage.dynamodb.stores.graphindex.capacity-write=.*#storage.dynamodb.stores.graphindex.capacity-write=25#' ${PROPS}
+fi
+
+if [ -n "$READ_UNITS" ]; then
+    sed -i.bckp 's#storage.dynamodb.stores.edgestore.capacity-read=.*#storage.dynamodb.stores.edgestore.capacity-read='$READ_UNITS'#' ${PROPS}
+    sed -i.bckp 's#storage.dynamodb.stores.graphindex.capacity-read=.*#storage.dynamodb.stores.graphindex.capacity-read='$READ_UNITS'#' ${PROPS}
+else
+    sed -i.bckp 's#storage.dynamodb.stores.edgestore.capacity-read=.*#storage.dynamodb.stores.edgestore.capacity-read=25#' ${PROPS}
+    sed -i.bckp 's#storage.dynamodb.stores.graphindex.capacity-read=.*#storage.dynamodb.stores.graphindex.capacity-read=25#' ${PROPS}
+fi
+
 cd ${SERVER_DIR}
 
 exec bin/gremlin-server.sh conf/gremlin-server/gremlin-server.yaml
