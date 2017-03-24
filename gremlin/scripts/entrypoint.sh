@@ -1,5 +1,6 @@
 #! /usr/bin/bash
 
+# Files for which configuration needs to change
 SERVER_DIR=dynamodb-titan-storage-backend/server/dynamodb-titan100-storage-backend-1.0.0-hadoop1/
 PROPS=${SERVER_DIR}/conf/gremlin-server/dynamodb.properties
 GREMLIN_CONF=${SERVER_DIR}/conf/gremlin-server/gremlin-server.yaml
