@@ -133,4 +133,4 @@ parameters:
   displayName: Image tag
   required: true
   name: IMAGE_TAG
-  value: "latest"
+  value: "1.1.0"
