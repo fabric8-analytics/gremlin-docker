@@ -71,23 +71,21 @@ objects:
             limits:
               memory: ${MEMORY_LIMIT}
           readinessProbe:
-            exec:
-              command:
-                - /opt/dynamodb/dynamodb-titan-storage-backend/server/dynamodb-titan100-storage-backend-1.0.0-hadoop1/bin/checksocket.sh
-                - localhost
-                - "8182"
+            httpGet:
+              path: /?gremlin=g.V().has('vertex_label','Package').count()
+              port: 8182
+              scheme: HTTP
             initialDelaySeconds: 60
             periodSeconds: 60
-            timeoutSeconds: 5
+            timeoutSeconds: 10
           livenessProbe:
-            exec:
-              command:
-                - /opt/dynamodb/dynamodb-titan-storage-backend/server/dynamodb-titan100-storage-backend-1.0.0-hadoop1/bin/checksocket.sh
-                - localhost
-                - "8182"
-            initialDelaySeconds: 120
+            httpGet:
+              path: /?gremlin=g.V().has('vertex_label','Package').count()
+              port: 8182
+              scheme: HTTP
+            initialDelaySeconds: 60
             periodSeconds: 60
-            timeoutSeconds: 5
+            timeoutSeconds: 10
         restartPolicy: Always
     test: false
     triggers:
