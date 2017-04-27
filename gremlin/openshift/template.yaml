@@ -78,7 +78,7 @@ objects:
               scheme: HTTP
             initialDelaySeconds: 60
             periodSeconds: 60
-            timeoutSeconds: 10
+            timeoutSeconds: 30
           livenessProbe:
             httpGet:
               # let's query non-existing data so we get response immediately
@@ -87,7 +87,7 @@ objects:
               scheme: HTTP
             initialDelaySeconds: 60
             periodSeconds: 60
-            timeoutSeconds: 10
+            timeoutSeconds: 30
         restartPolicy: Always
     test: false
     triggers:
