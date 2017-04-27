@@ -72,20 +72,22 @@ objects:
               memory: ${MEMORY_LIMIT}
           readinessProbe:
             httpGet:
-              path: /?gremlin=g.V().has('vertex_label','Package').count()
+              # let's query non-existing data so we get response immediately
+              path: /?gremlin=g.V().has('vertex_label','foobar').count()
               port: 8182
               scheme: HTTP
             initialDelaySeconds: 60
             periodSeconds: 60
-            timeoutSeconds: 10
+            timeoutSeconds: 30
           livenessProbe:
             httpGet:
-              path: /?gremlin=g.V().has('vertex_label','Package').count()
+              # let's query non-existing data so we get response immediately
+              path: /?gremlin=g.V().has('vertex_label','foobar').count()
               port: 8182
               scheme: HTTP
             initialDelaySeconds: 60
             periodSeconds: 60
-            timeoutSeconds: 10
+            timeoutSeconds: 30
         restartPolicy: Always
     test: false
     triggers:
