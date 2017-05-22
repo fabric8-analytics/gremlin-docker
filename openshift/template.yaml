@@ -121,13 +121,13 @@ parameters:
   displayName: Docker registry
   required: true
   name: DOCKER_REGISTRY
-  value: "registry.centos.org"
+  value: "registry.devshift.net"
 
 - description: Docker image to use
   displayName: Docker image
   required: true
   name: DOCKER_IMAGE
-  value: "datamodel/gremlin"
+  value: "bayesian/gremlin"
 
 - description: Image tag
   displayName: Image tag
