@@ -42,10 +42,10 @@ if (env.BRANCH_NAME == 'master') {
             sh "oc --context=dev process -v REST_VALUE=1 -v IMAGE_TAG=${commitId} -v CHANNELIZER=http -f template.yaml | oc --context=dev apply -f -"
         }
 
-        stage('Deploy - rh-idev') {
-            unstash 'templatet'
-            //sh "oc --context=rh-idev process -v REST_VALUE=1 -v IMAGE_TAG=${commitId} -v CHANNELIZER=http -f template.yaml | oc --context=rh-idev apply -f -"
-        }
+        //stage('Deploy - rh-idev') {
+        //    unstash 'template'
+        //    sh "oc --context=rh-idev process -v REST_VALUE=1 -v IMAGE_TAG=${commitId} -v CHANNELIZER=http -f template.yaml | oc --context=rh-idev apply -f -"
+        //}
     }
 }
 
