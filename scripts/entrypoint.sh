@@ -10,8 +10,6 @@ export JAVA_OPTIONS=${JAVA_OPTIONS:- -Xms512m -Xmx2048m}
 
 export JAVA_OPTIONS="$JAVA_OPTIONS -javaagent:/opt/dynamodb/$SERVER_DIR/lib/jamm-0.3.0.jar"
 
-echo  "storage.dynamodb.native-locking=false" >> ${PROPS}
-
 echo "Proceeding with JAVA_OPTIONS=$JAVA_OPTIONS"
 
 sed -i.bckp 's#host: .*#host: '$GREMLIN_HOST'#' ${GREMLIN_CONF}
