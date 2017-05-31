@@ -15,7 +15,7 @@ echo "Proceeding with JAVA_OPTIONS=$JAVA_OPTIONS"
 
 sed -i.bckp 's#host: .*#host: '$GREMLIN_HOST'#' ${GREMLIN_CONF}
 
-if grep -i 'graph.unique-instance-id=' "$PROPS" 1>/dev/null; then
+if grep -i '^graph.unique-instance-id=' "$PROPS" 1>/dev/null; then
     sed -i.bckp 's#graph.unique-instance-id=.*#graph.unique-instance-id='${UUID}'#' ${PROPS}
 else
     echo "graph.unique-instance-id=${UUID}" >> ${PROPS}
