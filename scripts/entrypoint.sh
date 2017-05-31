@@ -5,6 +5,7 @@ SERVER_DIR=dynamodb-titan-storage-backend/server/dynamodb-titan100-storage-backe
 PROPS=${SERVER_DIR}/conf/gremlin-server/dynamodb.properties
 GREMLIN_CONF=${SERVER_DIR}/conf/gremlin-server/gremlin-server.yaml
 GREMLIN_HOST=0.0.0.0
+UUID=$(cat /proc/sys/kernel/random/uuid)
 
 export JAVA_OPTIONS=${JAVA_OPTIONS:- -Xms512m -Xmx2048m}
 
@@ -13,6 +14,12 @@ export JAVA_OPTIONS="$JAVA_OPTIONS -javaagent:/opt/dynamodb/$SERVER_DIR/lib/jamm
 echo "Proceeding with JAVA_OPTIONS=$JAVA_OPTIONS"
 
 sed -i.bckp 's#host: .*#host: '$GREMLIN_HOST'#' ${GREMLIN_CONF}
+
+if grep -i 'graph.unique-instance-id=' "$PROPS" 1>/dev/null; then
+    sed -i.bckp 's#graph.unique-instance-id=.*#graph.unique-instance-id='${UUID}'#' ${PROPS}
+else
+    echo "graph.unique-instance-id=${UUID}" >> ${PROPS}
+fi
 
 if [ -n "$DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME" ]; then
     sed -i.bckp 's#storage.dynamodb.client.credentials.class-name=.*#storage.dynamodb.client.credentials.class-name='${DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME}'#' ${PROPS}
