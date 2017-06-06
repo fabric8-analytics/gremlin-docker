@@ -92,6 +92,8 @@ objects:
     test: false
     triggers:
     - type: ConfigChange
+    replicas: ${REPLICAS}
+
 parameters:
 - description: Value of the 'storage.dynamodb.client.credentials.class-name' property in dynamodb.properties
   name: DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME
@@ -134,3 +136,9 @@ parameters:
   required: true
   name: IMAGE_TAG
   value: "1.1.0"
+
+- description: Number of deployment replicas
+  displayName: Number of deployment replicas
+  required: true
+  name: REPLICAS
+  value: "1"
