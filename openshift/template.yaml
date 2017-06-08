@@ -28,7 +28,6 @@ objects:
       service: bayesian-gremlin-${CHANNELIZER}
     name: bayesian-gremlin-${CHANNELIZER}
   spec:
-    replicas: 1
     selector:
       service: bayesian-gremlin-${CHANNELIZER}
     template:
