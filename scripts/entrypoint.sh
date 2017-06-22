@@ -46,7 +46,7 @@ if [ -n "$THREAD_POOL" ]; then
 fi
 
 if [ -v "$DYNAMODB_CLIENT_ENDPOINT" ]; then
-  sed -i.bckp 's#storage.dynamodb.client.endpoint=.*#storage.dynamodb.client.endpoint='${DYNAMODB_CLIENT_ENDPOINT}'#' ${PROPS}
+    sed -i.bckp 's#storage.dynamodb.client.endpoint=.*#storage.dynamodb.client.endpoint='${DYNAMODB_CLIENT_ENDPOINT}'#' ${PROPS}
 fi
 
 if [ "$REST" == "1" ]; then
@@ -71,6 +71,39 @@ if [ -n "$READ_UNITS" ]; then
 else
     sed -i.bckp 's#storage.dynamodb.stores.edgestore.capacity-read=.*#storage.dynamodb.stores.edgestore.capacity-read=25#' ${PROPS}
     sed -i.bckp 's#storage.dynamodb.stores.graphindex.capacity-read=.*#storage.dynamodb.stores.graphindex.capacity-read=25#' ${PROPS}
+fi
+
+if [ -n "${DATA_MODEL}" ] && ( [ "$DATA_MODEL" = "SINGLE" ] || [ "$DATA_MODEL" = "MULTI" ] ); then
+    if grep -i '^storage.dynamodb.stores.edgestore.data-model=' "$PROPS" 1>/dev/null; then
+        sed -i.bckp 's#storage.dynamodb.stores.edgestore.data-model=.*#storage.dynamodb.stores.edgestore.data-model='${DATA_MODEL}'#' ${PROPS}
+    else
+        echo "storage.dynamodb.stores.edgestore.data-model=$DATA_MODEL" >> ${PROPS}
+    fi
+    if grep -i '^storage.dynamodb.stores.graphindex.data-model=' "$PROPS" 1>/dev/null; then
+        sed -i.bckp 's#storage.dynamodb.stores.graphindex.data-model=.*#storage.dynamodb.stores.graphindex.data-model='${DATA_MODEL}'#' ${PROPS}
+    else
+        echo "storage.dynamodb.stores.graphindex.data-model=$DATA_MODEL" >> ${PROPS}
+    fi
+    if grep -i '^storage.dynamodb.stores.systemlog.data-model=' "$PROPS" 1>/dev/null; then
+        sed -i.bckp 's#storage.dynamodb.stores.systemlog.data-model=.*#storage.dynamodb.stores.systemlog.data-model='${DATA_MODEL}'#' ${PROPS}
+    else
+        echo "storage.dynamodb.stores.systemlog.data-model=$DATA_MODEL" >> ${PROPS}
+    fi
+    if grep -i '^storage.dynamodb.stores.titan_ids.data-model=' "$PROPS" 1>/dev/null; then
+        sed -i.bckp 's#storage.dynamodb.stores.titan_ids.data-model=.*#storage.dynamodb.stores.titan_ids.data-model='${DATA_MODEL}'#' ${PROPS}
+    else
+        echo "storage.dynamodb.stores.titan_ids.data-model=$DATA_MODEL" >> ${PROPS}
+    fi
+    if grep -i '^storage.dynamodb.stores.system_properties.data-model=' "$PROPS" 1>/dev/null; then
+        sed -i.bckp 's#storage.dynamodb.stores.system_properties.data-model=.*#storage.dynamodb.stores.system_properties.data-model='${DATA_MODEL}'#' ${PROPS}
+    else
+        echo "storage.dynamodb.stores.system_properties.data-model=$DATA_MODEL" >> ${PROPS}
+    fi
+    if grep -i '^storage.dynamodb.stores.txlog.data-model=' "$PROPS" 1>/dev/null; then
+        sed -i.bckp 's#storage.dynamodb.stores.txlog.data-model=.*#storage.dynamodb.stores.txlog.data-model='${DATA_MODEL}'#' ${PROPS}
+    else
+        echo "storage.dynamodb.stores.txlog.data-model=$DATA_MODEL" >> ${PROPS}
+    fi
 fi
 
 cd ${SERVER_DIR}
