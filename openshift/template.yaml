@@ -67,8 +67,10 @@ objects:
           resources:
             requests:
               memory: ${MEMORY_REQUEST}
+              cpu: ${CPU_REQUEST}
             limits:
               memory: ${MEMORY_LIMIT}
+              cpu: ${CPU_LIMIT}
           readinessProbe:
             httpGet:
               # let's query non-existing data so we get response immediately
@@ -113,6 +115,14 @@ parameters:
   name: MEMORY_REQUEST
   required: true
   value: "1536Mi"
+- description: CPU_LIMIT
+  name: CPU_LIMIT
+  required: true
+  value: "1000m"
+- description: CPU_REQUEST
+  name: CPU_REQUEST
+  required: true
+  value: "500m"
 - description: Name of the channelizer being used. Setting this will not change the channelizer, this will merely influence the names of OpenShift objects being created. To change the channelizer, see REST_VALUE.
   name: CHANNELIZER
   required: true
