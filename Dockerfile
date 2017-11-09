@@ -1,11 +1,15 @@
-FROM registry.centos.org/datamodel/centos-java:concaf
+FROM registry.centos.org/centos/centos:7
 
 MAINTAINER Shubham <shubham@linux.com>
 
 EXPOSE 8182
 
 RUN yum -y install git zip unzip &&\
+		yum -y install java java-devel maven &&\
 		yum clean all
+
+# set JAVA_HOME
+ENV JAVA_HOME /usr/lib/jvm/java-openjdk
 
 RUN curl -o /opt/titan-1.1.0-SNAPSHOT-hadoop2.zip https://s3.amazonaws.com/bayesian-titan110/titan-1.1.0-SNAPSHOT-hadoop2.zip
 RUN curl -O https://s3.amazonaws.com/bayesian-titan110/titan-all.tgz &&\
