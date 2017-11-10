@@ -93,7 +93,7 @@ objects:
     test: false
     triggers:
     - type: ConfigChange
-    replicas: ${REPLICAS}
+    replicas: ${{REPLICAS}}
 
 parameters:
 - description: Value of the 'storage.dynamodb.client.credentials.class-name' property in dynamodb.properties
