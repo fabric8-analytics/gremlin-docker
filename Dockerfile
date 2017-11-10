@@ -11,8 +11,8 @@ RUN yum -y install git zip unzip &&\
 # set JAVA_HOME
 ENV JAVA_HOME /usr/lib/jvm/java-openjdk
 
-RUN curl -o /opt/titan-1.1.0-SNAPSHOT-hadoop2.zip https://s3.amazonaws.com/bayesian-titan110/titan-1.1.0-SNAPSHOT-hadoop2.zip
-RUN curl -O https://s3.amazonaws.com/bayesian-titan110/titan-all.tgz &&\
+RUN curl -o /opt/titan-1.1.0-SNAPSHOT-hadoop2.zip https://s3.amazonaws.com/gremlin-tarballs/titan-1.1.0-SNAPSHOT-hadoop2.zip
+RUN curl -O https://s3.amazonaws.com/gremlin-tarballs/titan-all.tgz &&\
     tar xzf titan-all.tgz
 
 # Prep, build and install DynamoDB storage backend driver with support for titan, and install Gremlin server
