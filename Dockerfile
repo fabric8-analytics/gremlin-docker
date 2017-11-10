@@ -1,4 +1,4 @@
-FROM registry.centos.org/datamodel/centos-java:concaf
+FROM registry.centos.org/datamodel/centos-java:latest
 
 MAINTAINER Shubham <shubham@linux.com>
 
@@ -7,9 +7,9 @@ EXPOSE 8182
 RUN yum -y install git zip unzip &&\
 		yum clean all
 
-RUN curl -o /opt/titan-1.1.0-SNAPSHOT-hadoop2.zip https://s3.amazonaws.com/bayesian-titan110/titan-1.1.0-SNAPSHOT-hadoop2.zip
-RUN curl -O https://s3.amazonaws.com/bayesian-titan110/titan-all.tgz &&\
-    tar xzf titan-all.tgz
+COPY ./tarballs/titan-1.1.0-SNAPSHOT-hadoop2.zip /opt/titan-1.1.0-SNAPSHOT-hadoop2.zip
+COPY ./tarballs/titan-all.tgz .
+RUN tar xzf titan-all.tgz
 
 # Prep, build and install DynamoDB storage backend driver with support for titan, and install Gremlin server
 RUN git clone https://github.com/awslabs/dynamodb-titan-storage-backend.git /opt/dynamodb/dynamodb-titan-storage-backend/ &&\
