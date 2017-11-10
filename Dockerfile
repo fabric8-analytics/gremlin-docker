@@ -7,8 +7,8 @@ EXPOSE 8182
 RUN yum -y install git zip unzip &&\
 		yum clean all
 
-COPY ./tars/titan-1.1.0-SNAPSHOT-hadoop2.zip /opt/titan-1.1.0-SNAPSHOT-hadoop2.zip
-COPY ./tars/titan-all.tgz .
+COPY ./tarballs/titan-1.1.0-SNAPSHOT-hadoop2.zip /opt/titan-1.1.0-SNAPSHOT-hadoop2.zip
+COPY ./tarballs/titan-all.tgz .
 RUN tar xzf titan-all.tgz
 
 # Prep, build and install DynamoDB storage backend driver with support for titan, and install Gremlin server
