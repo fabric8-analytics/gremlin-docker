@@ -30,6 +30,14 @@ objects:
   spec:
     selector:
       service: bayesian-gremlin-${CHANNELIZER}
+    strategy:
+      type: Rolling
+      rollingParams:
+        post:
+          failurePolicy: ignore
+          execNewPod:
+            containerName: bayesian-gremlin
+            command: ["post-hook.sh"]
     template:
       metadata:
         labels:
