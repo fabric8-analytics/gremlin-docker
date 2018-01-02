@@ -4,9 +4,10 @@ MAINTAINER Shubham <shubham@linux.com>
 
 EXPOSE 8182
 
-RUN yum -y install git zip unzip &&\
-		yum -y install java java-devel maven &&\
-		yum clean all
+RUN yum -y install epel-release &&\
+    yum -y install git zip unzip awscli &&\
+    yum -y install java java-devel maven &&\
+    yum clean all
 
 # set JAVA_HOME
 ENV JAVA_HOME /usr/lib/jvm/java-openjdk
@@ -43,8 +44,9 @@ RUN chmod +x /bin/entrypoint.sh &&\
     find /opt/dynamodb/ -type d -exec chmod g+x {} +
 
 ADD scripts/entrypoint-local.sh /bin/entrypoint-local.sh
-
 RUN chmod +x /bin/entrypoint-local.sh
+
+COPY scripts/post-hook.sh /bin/
 
 # We have already built everything, so remove the local repo now
 RUN rm -rf /root/.m2 /titan-all.tgz /opt/titan-1.1.0-SNAPSHOT-hadoop2.zip /opt/dynamodb/dynamodb-titan-storage-backend/server/dynamodb-titan100-storage-backend-1.0.0-hadoop1.zip
