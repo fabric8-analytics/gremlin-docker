@@ -66,6 +66,11 @@ objects:
               secretKeyRef:
                 name: aws
                 key: dynamodb-secret-access-key
+          - name: AWS_DEFAULT_REGION
+            valueFrom:
+               configMapKeyRef:
+                 name: bayesian-config
+                 key: aws-default-region
           image: "${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}"
           imagePullPolicy: Always
           name: bayesian-gremlin

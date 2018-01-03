@@ -11,7 +11,7 @@ if [ -z "${DYNAMODB_PREFIX}" ]; then
 fi
 
 # Let's give the gremlin-server some time to create the tables, we don't hurry
-sleep 120
+sleep 30
 
 # All $DYNAMODB_PREFIX prefixed tables
 TABLES=$(aws dynamodb list-tables --output=table --no-paginate | grep "${DYNAMODB_PREFIX}" | awk '{print $2}')
