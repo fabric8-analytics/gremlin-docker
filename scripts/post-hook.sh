@@ -11,7 +11,7 @@ if [ -z "${DYNAMODB_PREFIX}" ]; then
 fi
 
 # Let's give the gremlin-server some time to create the tables, we don't hurry
-sleep 30
+sleep 10
 
 # Get $DYNAMODB_PREFIX prefixed tables
 # The aws output looks like:
