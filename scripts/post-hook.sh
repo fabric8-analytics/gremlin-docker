@@ -20,8 +20,10 @@ for TABLE_NAME in ${TABLES}
 do
     # Get Amazon Resource Name (ARN) of the table
     TABLE_ARN=$(aws dynamodb describe-table --output=table --table-name "${TABLE_NAME}" | grep -w TableArn | awk '{print $4}')
-    # Tag table with ENV:$DYNAMODB_PREFIX
-    aws dynamodb tag-resource --resource-arn "${TABLE_ARN}" --tags "Key=ENV,Value=${DYNAMODB_PREFIX}"
-    # List tags (for debugging)
-    aws dynamodb list-tags-of-resource --resource-arn "${TABLE_ARN}"
+    if [ -n "${TABLE_ARN}" ]; then
+        # Tag table with ENV:$DYNAMODB_PREFIX
+        aws dynamodb tag-resource --resource-arn "${TABLE_ARN}" --tags "Key=ENV,Value=${DYNAMODB_PREFIX}"
+        # List tags (for debugging)
+        aws dynamodb list-tags-of-resource --resource-arn "${TABLE_ARN}"
+    fi
 done
