@@ -13,8 +13,16 @@ fi
 # Let's give the gremlin-server some time to create the tables, we don't hurry
 sleep 30
 
-# All $DYNAMODB_PREFIX prefixed tables
-TABLES=$(aws dynamodb list-tables --output=table | grep "${DYNAMODB_PREFIX}" | awk '{print $2}')
+# Get $DYNAMODB_PREFIX prefixed tables
+# The aws output looks like:
+# ||  someprefix_edgestore                        ||
+# ||  someprefix_graphindex                       ||
+# ||  someprefix_system_properties                ||
+# ||  someprefix_systemlog                        ||
+# ||  someprefix_titan_ids                        ||
+# ||  someprefix_txlog                            ||
+# so the grep checks whether there's also a white-space (on left) and _ (on right)
+TABLES=$(aws dynamodb list-tables --output=table | grep " ${DYNAMODB_PREFIX}_" | awk '{print $2}')
 
 for TABLE_NAME in ${TABLES}
 do
