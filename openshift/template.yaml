@@ -84,21 +84,19 @@ objects:
             limits:
               memory: ${MEMORY_LIMIT}
               cpu: ${CPU_LIMIT}
-          readinessProbe:
-            httpGet:
-              # let's query non-existing data so we get response immediately
-              path: /?gremlin=g.V().has('vertex_label','foobar').count()
-              port: 8182
-              scheme: HTTP
+          livenessProbe:
             initialDelaySeconds: 60
             periodSeconds: 60
             timeoutSeconds: 30
-          livenessProbe:
-            httpGet:
-              # let's query non-existing data so we get response immediately
-              path: /?gremlin=g.V().has('vertex_label','foobar').count()
+            failureThreshold: 3
+            successThreshold: 1
+            tcpSocket:
               port: 8182
-              scheme: HTTP
+          readinessProbe:
+            tcpSocket:
+              port: 8182
+            failureThreshold: 3
+            successThreshold: 1
             initialDelaySeconds: 60
             periodSeconds: 60
             timeoutSeconds: 30
