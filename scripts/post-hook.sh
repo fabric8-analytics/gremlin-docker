@@ -14,7 +14,7 @@ fi
 sleep 30
 
 # All $DYNAMODB_PREFIX prefixed tables
-TABLES=$(aws dynamodb list-tables --output=table --no-paginate | grep "${DYNAMODB_PREFIX}" | awk '{print $2}')
+TABLES=$(aws dynamodb list-tables --output=table | grep "${DYNAMODB_PREFIX}" | awk '{print $2}')
 
 for TABLE_NAME in ${TABLES}
 do
