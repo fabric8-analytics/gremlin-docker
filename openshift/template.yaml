@@ -11,8 +11,8 @@ objects:
   kind: Service
   metadata:
     labels:
-      service: bayesian-gremlin-${CHANNELIZER}
-    name: bayesian-gremlin-${CHANNELIZER}
+      service: bayesian-gremlin-${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+    name: bayesian-gremlin-${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
   spec:
     ports:
     - name: "8182"
@@ -25,11 +25,11 @@ objects:
   kind: DeploymentConfig
   metadata:
     labels:
-      service: bayesian-gremlin-${CHANNELIZER}
-    name: bayesian-gremlin-${CHANNELIZER}
+      service: bayesian-gremlin-${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+    name: bayesian-gremlin-${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
   spec:
     selector:
-      service: bayesian-gremlin-${CHANNELIZER}
+      service: bayesian-gremlin-${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
     strategy:
       type: Rolling
       rollingParams:
@@ -41,7 +41,7 @@ objects:
     template:
       metadata:
         labels:
-          service: bayesian-gremlin-${CHANNELIZER}
+          service: bayesian-gremlin-${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
       spec:
         containers:
         - env:
@@ -162,3 +162,9 @@ parameters:
   required: true
   name: REPLICAS
   value: "1"
+
+- description: Region for service - "ingestion", ""
+  displayName: Query administration region
+  required: true
+  name: QUERY_ADMINISTRATION_REGION
+  value: ""
