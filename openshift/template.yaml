@@ -163,8 +163,8 @@ parameters:
   name: REPLICAS
   value: "1"
 
-- description: Region for service - "ingestion", ""
+- description: Region for service - "ingestion" or ""
   displayName: Query administration region
-  required: true
+  required: false
   name: QUERY_ADMINISTRATION_REGION
   value: ""
