@@ -35,7 +35,7 @@ push_image() {
     image_name=$(make get-image-name)
     image_repository=$(make get-image-repository)
     short_commit=$(git rev-parse --short=7 HEAD)
-    push_registry="push.registry.devshift.net"
+    push_registry=$(make get-push-registry)
 
     # login first
     if [ -n "${DEVSHIFT_USERNAME}" -a -n "${DEVSHIFT_PASSWORD}" ]; then
