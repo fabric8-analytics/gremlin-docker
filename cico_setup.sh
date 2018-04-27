@@ -17,6 +17,8 @@ prep() {
 }
 
 build_image() {
+    local push_registry
+    push_registry=$(make get-push-registry)
     # login before build to be able to pull RHEL parent image 
     if [ -n "${DEVSHIFT_USERNAME}" -a -n "${DEVSHIFT_PASSWORD}" ]; then
         docker login -u ${DEVSHIFT_USERNAME} -p ${DEVSHIFT_PASSWORD} ${push_registry}
