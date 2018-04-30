@@ -3,7 +3,7 @@ ifeq ($(TARGET),rhel)
   REGISTRY := push.registry.devshift.net/osio-prod
 else
   DOCKERFILE := Dockerfile
-  REGISTRY := registry.devshift.net
+  REGISTRY := push.registry.devshift.net
 endif
 
 REPOSITORY?=bayesian/gremlin
