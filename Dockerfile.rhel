@@ -4,6 +4,9 @@ FROM prod.registry.devshift.net/osio-prod/base/jboss-jdk-8:latest
 
 EXPOSE 8182
 
+# set JAVA_HOME
+ENV JAVA_HOME /usr/lib/jvm/java-openjdk
+
 RUN curl -o /opt/titan-1.1.0-SNAPSHOT-hadoop2.zip https://s3.amazonaws.com/gremlin-tarballs/titan-1.1.0-SNAPSHOT-hadoop2.zip
 RUN curl -O https://s3.amazonaws.com/gremlin-tarballs/titan-all.tgz &&\
     tar xzf titan-all.tgz
