@@ -35,9 +35,9 @@ RUN cd /opt/dynamodb/dynamodb-titan-storage-backend/ &&\
 WORKDIR /opt/dynamodb/
 
 # Install Gremlin Python
-RUN mkdir -p ${M2_REPO}/repository/org/slf4j/slf4j-api/1.7.21/ &&\
+RUN mkdir -p ${M2_REPO}/org/slf4j/slf4j-api/1.7.21/ &&\
     cd dynamodb-titan-storage-backend/server/dynamodb-titan100-storage-backend-1.0.0-hadoop1 &&\
-    curl -o ${M2_REPO}/repository/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar &&\
+    curl -o ${M2_REPO}/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar &&\
     bin/gremlin-server.sh -i org.apache.tinkerpop gremlin-python 3.2.3
 
 ADD scripts/entrypoint.sh /bin/entrypoint.sh
