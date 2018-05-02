@@ -12,6 +12,7 @@ RUN yum -y install epel-release &&\
 ENV JAVA_HOME /usr/lib/jvm/java-openjdk
 ENV M2_DIR=/m2
 ENV M2_REPO=${M2_DIR}/repository
+ENV MAVEN_OPTS="-Dmaven.repo.local=${M2_REPO}"
 
 RUN curl -o /opt/titan-1.1.0-SNAPSHOT-hadoop2.zip https://s3.amazonaws.com/gremlin-tarballs/titan-1.1.0-SNAPSHOT-hadoop2.zip
 RUN curl -o /tmp/titan-repo.tgz https://s3.amazonaws.com/gremlin-tarballs/titan-all.tgz &&\
@@ -25,7 +26,7 @@ RUN git clone https://github.com/awslabs/dynamodb-titan-storage-backend.git /opt
     cd /opt/dynamodb/dynamodb-titan-storage-backend/ &&\
     git checkout d1a59624dcef796b835e7ffb41f0a3f007008d63 -b "last-working" &&\
     curl https://gist.githubusercontent.com/pluradj/d56c1948f4665ee7fb1bc35daeba4f92/raw/be5f639a64c8d6ac196c59eb7e6d1a1903015b17/dynamo-titan11-tp323.patch | git apply -v --index &&\
-    mvn -Dmaven.repo.local=${M2_REPO} install
+    mvn clean install
 
 
 RUN cd /opt/dynamodb/dynamodb-titan-storage-backend/ &&\
