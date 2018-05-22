@@ -1,11 +1,14 @@
 #! /usr/bin/bash
 
 # Files for which configuration needs to change
-SERVER_DIR=dynamodb-titan-storage-backend/server/dynamodb-titan100-storage-backend-1.0.0-hadoop1/
+SERVER_DIR=dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.2.0/
 PROPS=${SERVER_DIR}/conf/gremlin-server/dynamodb.properties
 GREMLIN_CONF=${SERVER_DIR}/conf/gremlin-server/gremlin-server.yaml
 GREMLIN_HOST=0.0.0.0
 UUID=$(cat /proc/sys/kernel/random/uuid)
+STORAGE_BACKEND=com.amazon.janusgraph.diskstorage.dynamodb.DynamoDBStoreManager
+USE_TITAN_IDS=true
+TITAN_IDS=titan_ids
 
 export JAVA_OPTIONS=${JAVA_OPTIONS:- -Xms512m -Xmx2048m}
 
@@ -103,6 +106,21 @@ if [ -n "${DATA_MODEL}" ] && ( [ "$DATA_MODEL" = "SINGLE" ] || [ "$DATA_MODEL" =
         sed -i.bckp 's#storage.dynamodb.stores.txlog.data-model=.*#storage.dynamodb.stores.txlog.data-model='${DATA_MODEL}'#' ${PROPS}
     else
         echo "storage.dynamodb.stores.txlog.data-model=$DATA_MODEL" >> ${PROPS}
+    fi
+    if grep -i '^storage.backend=' "$PROPS" 1>/dev/null; then
+        sed -i.bckp 's#storage.backend=.*#storage.backend='${STORAGE_BACKEND}'#' ${PROPS}
+    else
+        echo "storage.backend=$STORAGE_BACKEND" >> ${PROPS}
+    fi
+    if grep -i '^storage.dynamodb.use-titan-ids=' "$PROPS" 1>/dev/null; then
+        sed -i.bckp 's#storage.dynamodb.use-titan-ids=.*#storage.dynamodb.use-titan-ids='${USE_TITAN_IDS}'#' ${PROPS}
+    else
+        echo "storage.dynamodb.use-titan-ids=$USE_TITAN_IDS" >> ${PROPS}
+    fi
+    if grep -i '^storage.dynamodb.stores.ids.store-name=' "$PROPS" 1>/dev/null; then
+        sed -i.bckp 's#storage.dynamodb.stores.ids.store-name=.*#storage.dynamodb.stores.ids.store-name='${TITAN_IDS}'#' ${PROPS}
+    else
+        echo "storage.dynamodb.use-titan-ids=$TITAN_IDS" >> ${PROPS}
     fi
 fi
 
