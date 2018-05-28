@@ -21,8 +21,6 @@ WORKDIR /opt/dynamodb/
 
 # Install Gremlin Python
 RUN mkdir -p ${M2_REPO}/repository/org/slf4j/slf4j-api/1.7.21/ &&\
-    rm -rf ~/.m2/repository &&\
-    rm -rf ~/.groovy/grapes &&\
     cd dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.2.0 &&\
     curl -o ${M2_REPO}/repository/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar &&\
     bin/gremlin-server.sh -i org.apache.tinkerpop gremlin-python 3.2.3
