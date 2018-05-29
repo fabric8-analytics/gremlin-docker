@@ -19,13 +19,18 @@ RUN cd /opt/dynamodb/dynamodb-janusgraph-storage-backend/ &&\
 
 WORKDIR /opt/dynamodb/
 
-# Install Gremlin Python
-RUN mkdir -p ${M2_REPO}/repository/org/slf4j/slf4j-api/1.7.21/ &&\
-rm -rf ~/.m2/repository &&\
+# Cleanup Directories
+RUN mkdir -p ${M2_DIR}/root &&\
+    rm -Rf ${M2_REPO}/ &&\
+    mkdir -p ${M2_REPO}/repository/org/slf4j/slf4j-api/1.7.21/ &&\
+    rm -rf ~/.m2/repository &&\
     rm -rf ~/.groovy/grapes &&\
-    cd dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.2.0 &&\
-    curl -o ${M2_REPO}/repository/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar &&\
-    bin/gremlin-server.sh -i org.apache.tinkerpop gremlin-python 3.2.3
+    curl -o ${M2_REPO}/repository/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar
+
+
+# Install Gremlin Python
+RUN  cd dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.2.0 &&\
+     bin/gremlin-server.sh -i org.apache.tinkerpop gremlin-python 3.2.3
 
 ADD scripts/entrypoint.sh /bin/entrypoint.sh
 
@@ -38,8 +43,5 @@ ADD scripts/entrypoint-local.sh /bin/entrypoint-local.sh
 RUN chmod +x /bin/entrypoint-local.sh
 
 COPY scripts/post-hook.sh /bin/
-
-# We have already built everything, so remove the local repo now
-#RUN rm -rf /opt/titan-1.1.0-SNAPSHOT-hadoop2.zip /opt/dynamodb/dynamodb-titan-storage-backend/server/dynamodb-titan100-storage-backend-1.0.0-hadoop1.zip
 
 ENTRYPOINT ["/bin/entrypoint.sh"]

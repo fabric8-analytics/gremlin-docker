@@ -39,9 +39,7 @@ RUN mkdir -p ${M2_DIR}/root &&\
     curl -o ${M2_REPO}/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar
 
 # Install Gremlin Python
-RUN mkdir -p ${M2_REPO}/org/slf4j/slf4j-api/1.7.21/ &&\
-    cd dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.2.0 &&\
-    curl -o ${M2_REPO}/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar &&\
+RUN cd dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.2.0 &&\
     bin/gremlin-server.sh -i org.apache.tinkerpop gremlin-python 3.2.3
 
 ADD scripts/entrypoint.sh /bin/entrypoint.sh
