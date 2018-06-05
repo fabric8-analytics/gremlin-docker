@@ -9,6 +9,7 @@ UUID=$(cat /proc/sys/kernel/random/uuid)
 STORAGE_BACKEND=com.amazon.janusgraph.diskstorage.dynamodb.DynamoDBStoreManager
 USE_TITAN_IDS=true
 TITAN_IDS=titan_ids
+OLD_TITAN_VERSION=1.1.0
 
 export JAVA_OPTIONS=${JAVA_OPTIONS:- -Xms512m -Xmx2048m}
 
@@ -22,6 +23,12 @@ if grep -i '^graph.unique-instance-id=' "$PROPS" 1>/dev/null; then
     sed -i.bckp 's#graph.unique-instance-id=.*#graph.unique-instance-id='${UUID}'#' ${PROPS}
 else
     echo "graph.unique-instance-id=${UUID}" >> ${PROPS}
+fi
+
+if grep -i '^graph.titan-version=' "$PROPS" 1>/dev/null; then
+    sed -i.bckp 's#graph.titan-version=.*#graph.titan-version='${OLD_TITAN_VERSION}'#' ${PROPS}
+else
+    echo "graph.titan-version=${OLD_TITAN_VERSION}" >> ${PROPS}
 fi
 
 if [ -n "$DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME" ]; then
@@ -120,7 +127,7 @@ if [ -n "${DATA_MODEL}" ] && ( [ "$DATA_MODEL" = "SINGLE" ] || [ "$DATA_MODEL" =
     if grep -i '^storage.dynamodb.stores.ids.store-name=' "$PROPS" 1>/dev/null; then
         sed -i.bckp 's#storage.dynamodb.stores.ids.store-name=.*#storage.dynamodb.stores.ids.store-name='${TITAN_IDS}'#' ${PROPS}
     else
-        echo "storage.dynamodb.use-titan-ids=$TITAN_IDS" >> ${PROPS}
+        echo "storage.dynamodb.stores.ids.store-name=$TITAN_IDS" >> ${PROPS}
     fi
 fi
 
