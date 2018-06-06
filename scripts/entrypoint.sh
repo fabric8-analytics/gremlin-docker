@@ -117,10 +117,10 @@ if [ -n "${DATA_MODEL}" ] && ( [ "$DATA_MODEL" = "SINGLE" ] || [ "$DATA_MODEL" =
     else
         echo "storage.dynamodb.use-titan-ids=$USE_TITAN_IDS" >> ${PROPS}
     fi
-    if grep -i '^storage.dynamodb.stores.ids.store-name=' "$PROPS" 1>/dev/null; then
-        sed -i.bckp 's#storage.dynamodb.stores.ids.store-name=.*#storage.dynamodb.stores.ids.store-name='${TITAN_IDS}'#' ${PROPS}
+    if grep -i '^ids.store-name=' "$PROPS" 1>/dev/null; then
+        sed -i.bckp 's#ids.store-name=.*#ids.store-name='${TITAN_IDS}'#' ${PROPS}
     else
-        echo "storage.dynamodb.stores.ids.store-name=$TITAN_IDS" >> ${PROPS}
+        echo "ids.store-name=$TITAN_IDS" >> ${PROPS}
     fi
 fi
 
