@@ -9,7 +9,7 @@ UUID=$(cat /proc/sys/kernel/random/uuid)
 STORAGE_BACKEND=com.amazon.janusgraph.diskstorage.dynamodb.DynamoDBStoreManager
 USE_TITAN_IDS=true
 TITAN_IDS=titan_ids
-OLD_TITAN_VERSION=1.0.0
+OLD_TITAN_VERSION=1.1.0-SNAPSHOT
 
 export JAVA_OPTIONS=${JAVA_OPTIONS:- -Xms512m -Xmx2048m}
 
