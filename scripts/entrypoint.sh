@@ -124,6 +124,10 @@ if [ -n "${DATA_MODEL}" ] && ( [ "$DATA_MODEL" = "SINGLE" ] || [ "$DATA_MODEL" =
     fi
 fi
 
+echo "#----------------------Added YUSUF ---------------------" >> ${PROPS}
+
+cat ${PROPS}
+
 cd ${SERVER_DIR}
 
 exec bin/gremlin-server.sh conf/gremlin-server/gremlin-server.yaml
