@@ -76,6 +76,24 @@ else
     sed -i.bckp 's#storage.dynamodb.stores.graphindex.capacity-read=.*#storage.dynamodb.stores.graphindex.capacity-read=25#' ${PROPS}
 fi
 
+if grep -i '^storage.backend=' "$PROPS" 1>/dev/null; then
+    sed -i.bckp 's#storage.backend=.*#storage.backend='${STORAGE_BACKEND}'#' ${PROPS}
+ else
+    echo "storage.backend=$STORAGE_BACKEND" >> ${PROPS}
+fi
+
+if grep -i '^storage.dynamodb.use-titan-ids=' "$PROPS" 1>/dev/null; then
+    sed -i.bckp 's#storage.dynamodb.use-titan-ids=.*#storage.dynamodb.use-titan-ids='${USE_TITAN_IDS}'#' ${PROPS}
+else
+    echo "storage.dynamodb.use-titan-ids=$USE_TITAN_IDS" >> ${PROPS}
+fi
+
+if grep -i '^ids.store-name=' "$PROPS" 1>/dev/null; then
+   sed -i.bckp 's#ids.store-name=.*#ids.store-name='${TITAN_IDS}'#' ${PROPS}
+else
+   echo "ids.store-name=$TITAN_IDS" >> ${PROPS}
+fi
+
 if [ -n "${DATA_MODEL}" ] && ( [ "$DATA_MODEL" = "SINGLE" ] || [ "$DATA_MODEL" = "MULTI" ] ); then
     if grep -i '^storage.dynamodb.stores.edgestore.data-model=' "$PROPS" 1>/dev/null; then
         sed -i.bckp 's#storage.dynamodb.stores.edgestore.data-model=.*#storage.dynamodb.stores.edgestore.data-model='${DATA_MODEL}'#' ${PROPS}
@@ -107,26 +125,9 @@ if [ -n "${DATA_MODEL}" ] && ( [ "$DATA_MODEL" = "SINGLE" ] || [ "$DATA_MODEL" =
     else
         echo "storage.dynamodb.stores.txlog.data-model=$DATA_MODEL" >> ${PROPS}
     fi
-    if grep -i '^storage.backend=' "$PROPS" 1>/dev/null; then
-        sed -i.bckp 's#storage.backend=.*#storage.backend='${STORAGE_BACKEND}'#' ${PROPS}
-    else
-        echo "storage.backend=$STORAGE_BACKEND" >> ${PROPS}
-    fi
-    if grep -i '^storage.dynamodb.use-titan-ids=' "$PROPS" 1>/dev/null; then
-        sed -i.bckp 's#storage.dynamodb.use-titan-ids=.*#storage.dynamodb.use-titan-ids='${USE_TITAN_IDS}'#' ${PROPS}
-    else
-        echo "storage.dynamodb.use-titan-ids=$USE_TITAN_IDS" >> ${PROPS}
-    fi
-    if grep -i '^ids.store-name=' "$PROPS" 1>/dev/null; then
-        sed -i.bckp 's#ids.store-name=.*#ids.store-name='${TITAN_IDS}'#' ${PROPS}
-    else
-        echo "ids.store-name=$TITAN_IDS" >> ${PROPS}
-    fi
 fi
 
-echo "#----------------------Added YUSUF ---------------------" >> ${PROPS}
-
-cat ${PROPS}
+echo "#Added YUSUF ---------------------" >> ${PROPS}
 
 cd ${SERVER_DIR}
 
