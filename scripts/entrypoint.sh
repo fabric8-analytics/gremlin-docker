@@ -24,6 +24,8 @@ else
     echo "graph.unique-instance-id=${UUID}" >> ${PROPS}
 fi
 
+echo "graph.titan-version=1.1.0-SNAPSHOT" >> ${PROPS}
+
 if [ -n "$DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME" ]; then
     sed -i.bckp 's#storage.dynamodb.client.credentials.class-name=.*#storage.dynamodb.client.credentials.class-name='${DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME}'#' ${PROPS}
 fi
