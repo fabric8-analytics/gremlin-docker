@@ -7,6 +7,8 @@ GREMLIN_CONF=${SERVER_DIR}/conf/gremlin-server/gremlin-server.yaml
 GREMLIN_HOST=0.0.0.0
 UUID=$(cat /proc/sys/kernel/random/uuid)
 STORAGE_BACKEND=com.amazon.janusgraph.diskstorage.dynamodb.DynamoDBStoreManager
+USE_TITAN=true
+USE_OLD_TITAN=titan_ids
 
 export JAVA_OPTIONS=${JAVA_OPTIONS:- -Xms512m -Xmx2048m}
 
@@ -59,19 +61,19 @@ if [ -n "$DYNAMODB_PREFIX" ]; then
 fi
 
 if [ -n "$WRITE_UNITS" ]; then
-    sed -i.bckp 's#storage.dynamodb.stores.edgestore.capacity-write=.*#storage.dynamodb.stores.edgestore.capacity-write='$WRITE_UNITS'#' ${PROPS}
-    sed -i.bckp 's#storage.dynamodb.stores.graphindex.capacity-write=.*#storage.dynamodb.stores.graphindex.capacity-write='$WRITE_UNITS'#' ${PROPS}
+    sed -i.bckp 's#storage.dynamodb.stores.edgestore.initial-capacity-write=.*#storage.dynamodb.stores.edgestore.initial-capacity-write='$WRITE_UNITS'#' ${PROPS}
+    sed -i.bckp 's#storage.dynamodb.stores.graphindex.initial-capacity-write=.*#storage.dynamodb.stores.graphindex.initial-capacity-write='$WRITE_UNITS'#' ${PROPS}
 else
-    sed -i.bckp 's#storage.dynamodb.stores.edgestore.capacity-write=.*#storage.dynamodb.stores.edgestore.capacity-write=25#' ${PROPS}
-    sed -i.bckp 's#storage.dynamodb.stores.graphindex.capacity-write=.*#storage.dynamodb.stores.graphindex.capacity-write=25#' ${PROPS}
+    sed -i.bckp 's#storage.dynamodb.stores.edgestore.initial-capacity-write=.*#storage.dynamodb.stores.edgestore.initial-capacity-write=25#' ${PROPS}
+    sed -i.bckp 's#storage.dynamodb.stores.graphindex.initial-capacity-write=.*#storage.dynamodb.stores.graphindex.initial-capacity-write=25#' ${PROPS}
 fi
 
 if [ -n "$READ_UNITS" ]; then
-    sed -i.bckp 's#storage.dynamodb.stores.edgestore.capacity-read=.*#storage.dynamodb.stores.edgestore.capacity-read='$READ_UNITS'#' ${PROPS}
-    sed -i.bckp 's#storage.dynamodb.stores.graphindex.capacity-read=.*#storage.dynamodb.stores.graphindex.capacity-read='$READ_UNITS'#' ${PROPS}
+    sed -i.bckp 's#storage.dynamodb.stores.edgestore.initial-capacity-read=.*#storage.dynamodb.stores.edgestore.initial-capacity-read='$READ_UNITS'#' ${PROPS}
+    sed -i.bckp 's#storage.dynamodb.stores.graphindex.initial-capacity-read=.*#storage.dynamodb.stores.graphindex.initial-capacity-read='$READ_UNITS'#' ${PROPS}
 else
-    sed -i.bckp 's#storage.dynamodb.stores.edgestore.capacity-read=.*#storage.dynamodb.stores.edgestore.capacity-read=25#' ${PROPS}
-    sed -i.bckp 's#storage.dynamodb.stores.graphindex.capacity-read=.*#storage.dynamodb.stores.graphindex.capacity-read=25#' ${PROPS}
+    sed -i.bckp 's#storage.dynamodb.stores.edgestore.initial-capacity-read=.*#storage.dynamodb.stores.edgestore.initial-capacity-read=25#' ${PROPS}
+    sed -i.bckp 's#storage.dynamodb.stores.graphindex.initial-capacity-read=.*#storage.dynamodb.stores.graphindex.initial-capacity-read=25#' ${PROPS}
 fi
 
 if grep -i '^storage.backend=' "$PROPS" 1>/dev/null; then
@@ -90,6 +92,18 @@ if grep -i '^storage.dynamodb.client.signing-region=' "$PROPS" 1>/dev/null; then
     sed -i.bckp 's#storage.dynamodb.client.signing-region=.*#storage.dynamodb.client.signing-region='${AWS_DEFAULT_REGION}'#' ${PROPS}
  else
     echo "storage.dynamodb.client.signing-region=$AWS_DEFAULT_REGION" >> ${PROPS}
+fi
+
+if grep -i '^storage.dynamodb.use-titan-ids=' "$PROPS" 1>/dev/null; then
+    sed -i.bckp 's#storage.dynamodb.use-titan-ids=.*#storage.dynamodb.use-titan-ids='${USE_TITAN}'#' ${PROPS}
+ else
+    echo "storage.dynamodb.use-titan-ids=$USE_TITAN" >> ${PROPS}
+fi
+
+if grep -i '^ids.store-name=' "$PROPS" 1>/dev/null; then
+    sed -i.bckp 's#ids.store-name=.*#ids.store-name='${USE_OLD_TITAN}'#' ${PROPS}
+ else
+    echo "ids.store-name=$USE_OLD_TITAN" >> ${PROPS}
 fi
 
 
