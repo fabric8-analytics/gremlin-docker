@@ -7,8 +7,6 @@ GREMLIN_CONF=${SERVER_DIR}/conf/gremlin-server/gremlin-server.yaml
 GREMLIN_HOST=0.0.0.0
 UUID=$(cat /proc/sys/kernel/random/uuid)
 STORAGE_BACKEND=com.amazon.janusgraph.diskstorage.dynamodb.DynamoDBStoreManager
-USE_TITAN_IDS=true
-TITAN_IDS=titan_ids
 
 export JAVA_OPTIONS=${JAVA_OPTIONS:- -Xms512m -Xmx2048m}
 
@@ -82,17 +80,18 @@ if grep -i '^storage.backend=' "$PROPS" 1>/dev/null; then
     echo "storage.backend=$STORAGE_BACKEND" >> ${PROPS}
 fi
 
-if grep -i '^storage.dynamodb.use-titan-ids=' "$PROPS" 1>/dev/null; then
-    sed -i.bckp 's#storage.dynamodb.use-titan-ids=.*#storage.dynamodb.use-titan-ids='${USE_TITAN_IDS}'#' ${PROPS}
-else
-    echo "storage.dynamodb.use-titan-ids=$USE_TITAN_IDS" >> ${PROPS}
+if grep -i '^storage.dynamodb.prefix=' "$PROPS" 1>/dev/null; then
+    sed -i.bckp 's#storage.dynamodb.prefix=.*#storage.dynamodb.prefix='${DYNAMODB_PREFIX}'#' ${PROPS}
+ else
+    echo "storage.dynamodb.prefix=$DYNAMODB_PREFIX" >> ${PROPS}
 fi
 
-if grep -i '^ids.store-name=' "$PROPS" 1>/dev/null; then
-   sed -i.bckp 's#ids.store-name=.*#ids.store-name='${TITAN_IDS}'#' ${PROPS}
-else
-   echo "ids.store-name=$TITAN_IDS" >> ${PROPS}
+if grep -i '^storage.dynamodb.client.signing-region=' "$PROPS" 1>/dev/null; then
+    sed -i.bckp 's#storage.dynamodb.client.signing-region=.*#storage.dynamodb.client.signing-region='${AWS_DEFAULT_REGION}'#' ${PROPS}
+ else
+    echo "storage.dynamodb.client.signing-region=$AWS_DEFAULT_REGION" >> ${PROPS}
 fi
+
 
 if [ -n "${DATA_MODEL}" ] && ( [ "$DATA_MODEL" = "SINGLE" ] || [ "$DATA_MODEL" = "MULTI" ] ); then
     if grep -i '^storage.dynamodb.stores.edgestore.data-model=' "$PROPS" 1>/dev/null; then
@@ -126,8 +125,6 @@ if [ -n "${DATA_MODEL}" ] && ( [ "$DATA_MODEL" = "SINGLE" ] || [ "$DATA_MODEL" =
         echo "storage.dynamodb.stores.txlog.data-model=$DATA_MODEL" >> ${PROPS}
     fi
 fi
-
-echo "#Added YUSUF ---------------------" >> ${PROPS}
 
 cd ${SERVER_DIR}
 
