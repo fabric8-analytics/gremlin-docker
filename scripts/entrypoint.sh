@@ -26,9 +26,6 @@ fi
 
 echo "graph.titan-version=1.1.0-SNAPSHOT" >> ${PROPS}
 
-#echo "index.search.elasticsearch.interface=REST_CLIENT" >> ${PROPS}
-
-
 if [ -n "$DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME" ]; then
     sed -i.bckp 's#storage.dynamodb.client.credentials.class-name=.*#storage.dynamodb.client.credentials.class-name='${DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME}'#' ${PROPS}
 fi
