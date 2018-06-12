@@ -26,7 +26,7 @@ fi
 
 echo "graph.titan-version=1.1.0-SNAPSHOT" >> ${PROPS}
 
-echo "index.search.elasticsearch.interface=REST_CLIENT" >> ${PROPS}
+#echo "index.search.elasticsearch.interface=REST_CLIENT" >> ${PROPS}
 
 
 if [ -n "$DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME" ]; then
