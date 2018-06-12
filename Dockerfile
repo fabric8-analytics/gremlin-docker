@@ -44,8 +44,8 @@ RUN cd dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-ba
 
 ADD scripts/entrypoint.sh /bin/entrypoint.sh
 
-RUN cd dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.2.0 &&\
-    elasticsearch/bin/elasticsearch
+#RUN cd dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.2.0 &&\
+#    elasticsearch/bin/elasticsearch
 
 RUN chmod +x /bin/entrypoint.sh &&\
     chgrp -R 0 /opt/dynamodb/ &&\
