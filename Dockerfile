@@ -18,7 +18,6 @@ ENV MAVEN_OPTS="-Dmaven.repo.local=${M2_REPO}"
 
 
 # Clone Janusgraph from a particular version and create jar
-
 RUN git clone https://github.com/awslabs/dynamodb-janusgraph-storage-backend.git --branch jg0.1.1-1.1.0 /opt/dynamodb/dynamodb-janusgraph-storage-backend/ &&\
     cd /opt/dynamodb/dynamodb-janusgraph-storage-backend &&\
     mvn clean install
