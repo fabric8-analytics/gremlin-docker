@@ -1,7 +1,6 @@
 #! /usr/bin/bash
 
 # Files for which configuration needs to change
-
 SERVER_DIR=dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.1.0/
 PROPS=${SERVER_DIR}/conf/gremlin-server/dynamodb.properties
 GREMLIN_CONF=${SERVER_DIR}/conf/gremlin-server/gremlin-server.yaml
@@ -33,7 +32,6 @@ sed -i.bckp 's#jmxReporter: .*#jmxReporter: {enabled: false}, #' ${GREMLIN_CONF}
 sed -i.bckp 's#slf4jReporter: .*#slf4jReporter: {enabled: false}, #' ${GREMLIN_CONF}
 sed -i.bckp 's#gangliaReporter: .*#gangliaReporter: {enabled: false}, #' ${GREMLIN_CONF}
 sed -i.bckp 's#graphiteReporter: .*#graphiteReporter: {enabled: false}, #' ${GREMLIN_CONF}
-
 
 if [ -n "$DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME" ]; then
     sed -i.bckp 's#storage.dynamodb.client.credentials.class-name=.*#storage.dynamodb.client.credentials.class-name='${DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME}'#' ${PROPS}
