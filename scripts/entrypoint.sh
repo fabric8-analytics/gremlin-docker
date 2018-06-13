@@ -33,8 +33,6 @@ sed -i.bckp 's#slf4jReporter: .*#slf4jReporter: {enabled: false}, #' ${GREMLIN_C
 sed -i.bckp 's#gangliaReporter: .*#gangliaReporter: {enabled: false}, #' ${GREMLIN_CONF}
 sed -i.bckp 's#graphiteReporter: .*#graphiteReporter: {enabled: false}, #' ${GREMLIN_CONF}
 
-#echo "index.search.elasticsearch.interface=REST_CLIENT" >> ${PROPS}
-
 if [ -n "$DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME" ]; then
     sed -i.bckp 's#storage.dynamodb.client.credentials.class-name=.*#storage.dynamodb.client.credentials.class-name='${DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME}'#' ${PROPS}
 fi
