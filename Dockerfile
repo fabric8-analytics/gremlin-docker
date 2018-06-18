@@ -55,4 +55,3 @@ RUN chmod +x /bin/entrypoint-local.sh
 COPY scripts/post-hook.sh /bin/
 
 ENTRYPOINT ["/bin/entrypoint.sh"]
-
