@@ -15,6 +15,9 @@ TITAN_IDS=titan_ids
 
 echo "DYNAMO_HOST is set to ${DYNAMO_HOST}, DYNAMO_PORT is set to ${DYNAMO_PORT}"
 
+echo "graph.titan-version=1.1.0-SNAPSHOT" >> ${PROPS}
+
+
 sed -i.bckp 's#host: .*#host: '$GREMLIN_HOST'#' ${GREMLIN_CONF}
 sed -i.bckp 's#scriptEvaluationTimeout: .*#scriptEvaluationTimeout: '${SCRIPT_TIMEOUT}'#' ${GREMLIN_CONF}
 sed -i.bckp 's#serializedResponseTimeout: .*#serializedResponseTimeout: '${RESPONSE_TIMEOUT}'#' ${GREMLIN_CONF}
@@ -22,10 +25,10 @@ sed -i.bckp 's#serializedResponseTimeout: .*#serializedResponseTimeout: '${RESPO
 sed -i.bckp 's#storage.dynamodb.client.endpoint=.*#storage.dynamodb.client.endpoint=http://'$DYNAMO_HOST':'$DYNAMO_PORT'#' ${PROPS}
 
 sed -i.bckp 's#storage.backend=.*#storage.backend='${STORAGE_BACKEND}'#' ${PROPS}
-
+sed -i.bckp 's#storage.dynamodb.prefix=.*#storage.dynamodb.prefix='${DYNAMODB_PREFIX}'#' ${PROPS}
 sed -i.bckp 's#storage.dynamodb.use-titan-ids=.*#storage.dynamodb.use-titan-ids='${USE_TITAN_IDS}'#' ${PROPS}
-
-sed -i.bckp 's#storage.dynamodb.stores.ids.store-name=.*#storage.dynamodb.stores.ids.store-name='${TITAN_IDS}'#' ${PROPS}
+sed -i.bckp 's#storage.dynamodb.client.signing-region=.*#storage.dynamodb.client.signing-region='${AWS_DEFAULT_REGION}'#' ${PROPS}
+sed -i.bckp 's#ids.store-name=.*#ids.store-name='${TITAN_IDS}'#' ${PROPS}
 
 echo "Setup code metrics configuration"
 
