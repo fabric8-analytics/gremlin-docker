@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-SERVER_DIR=dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.2.0/
+SERVER_DIR=dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.1.0/
 PROPS=${SERVER_DIR}/conf/gremlin-server/dynamodb-local.properties
 GREMLIN_CONF=${SERVER_DIR}/conf/gremlin-server/gremlin-server-local.yaml
 DYNAMO_HOST=${DYNAMO_HOST:-dynamodb}
