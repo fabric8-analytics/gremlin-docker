@@ -106,13 +106,13 @@ fi
 if grep -i '^storage.dynamodb.use-titan-ids=' "$PROPS" 1>/dev/null; then
     sed -i.bckp 's#storage.dynamodb.use-titan-ids=.*#storage.dynamodb.use-titan-ids='${USE_TITAN_IDS}'#' ${PROPS}
  else
-    echo "storage.dynamodb.use-titan-ids=USE_TITAN_IDS" >> ${PROPS}
+    echo "storage.dynamodb.use-titan-ids=$USE_TITAN_IDS" >> ${PROPS}
 fi
 
 if grep -i '^ids.store-name=' "$PROPS" 1>/dev/null; then
     sed -i.bckp 's#ids.store-name=.*#ids.store-name='${TITAN_IDS}'#' ${PROPS}
  else
-    echo "ids.store-name=TITAN_IDS" >> ${PROPS}
+    echo "ids.store-name=$TITAN_IDS" >> ${PROPS}
 fi
 
 
