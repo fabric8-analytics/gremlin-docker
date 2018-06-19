@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-SERVER_DIR=dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.2.0/
+SERVER_DIR=dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.1.0/
 PROPS=${SERVER_DIR}/conf/gremlin-server/dynamodb-local.properties
 GREMLIN_CONF=${SERVER_DIR}/conf/gremlin-server/gremlin-server-local.yaml
 DYNAMO_HOST=${DYNAMO_HOST:-dynamodb}
@@ -22,10 +22,10 @@ sed -i.bckp 's#serializedResponseTimeout: .*#serializedResponseTimeout: '${RESPO
 sed -i.bckp 's#storage.dynamodb.client.endpoint=.*#storage.dynamodb.client.endpoint=http://'$DYNAMO_HOST':'$DYNAMO_PORT'#' ${PROPS}
 
 sed -i.bckp 's#storage.backend=.*#storage.backend='${STORAGE_BACKEND}'#' ${PROPS}
-
+sed -i.bckp 's#storage.dynamodb.prefix=.*#storage.dynamodb.prefix='${DYNAMODB_PREFIX}'#' ${PROPS}
 sed -i.bckp 's#storage.dynamodb.use-titan-ids=.*#storage.dynamodb.use-titan-ids='${USE_TITAN_IDS}'#' ${PROPS}
-
-sed -i.bckp 's#storage.dynamodb.stores.ids.store-name=.*#storage.dynamodb.stores.ids.store-name='${TITAN_IDS}'#' ${PROPS}
+sed -i.bckp 's#storage.dynamodb.client.signing-region=.*#storage.dynamodb.client.signing-region='${AWS_DEFAULT_REGION}'#' ${PROPS}
+sed -i.bckp 's#ids.store-name=.*#ids.store-name='${TITAN_IDS}'#' ${PROPS}
 
 echo "Setup code metrics configuration"
 

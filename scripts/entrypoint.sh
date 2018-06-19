@@ -7,8 +7,8 @@ GREMLIN_CONF=${SERVER_DIR}/conf/gremlin-server/gremlin-server.yaml
 GREMLIN_HOST=0.0.0.0
 UUID=$(cat /proc/sys/kernel/random/uuid)
 STORAGE_BACKEND=com.amazon.janusgraph.diskstorage.dynamodb.DynamoDBStoreManager
-USE_TITAN=true
-USE_OLD_TITAN=titan_ids
+USE_TITAN_IDS=true
+TITAN_IDS=titan_ids
 
 export JAVA_OPTIONS=${JAVA_OPTIONS:- -Xms512m -Xmx2048m}
 
@@ -31,7 +31,7 @@ sed -i.bckp 's#csvReporter: .*#csvReporter: {enabled: false}, #' ${GREMLIN_CONF}
 sed -i.bckp 's#jmxReporter: .*#jmxReporter: {enabled: false}, #' ${GREMLIN_CONF}
 sed -i.bckp 's#slf4jReporter: .*#slf4jReporter: {enabled: false}, #' ${GREMLIN_CONF}
 sed -i.bckp 's#gangliaReporter: .*#gangliaReporter: {enabled: false}, #' ${GREMLIN_CONF}
-sed -i.bckp 's#graphiteReporter: .*#graphiteReporter: {enabled: false}, #' ${GREMLIN_CONF}
+sed -i.bckp 's#graphiteReporter: .*#graphiteReporter: {enabled: false}} #' ${GREMLIN_CONF}
 
 if [ -n "$DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME" ]; then
     sed -i.bckp 's#storage.dynamodb.client.credentials.class-name=.*#storage.dynamodb.client.credentials.class-name='${DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME}'#' ${PROPS}
@@ -104,15 +104,15 @@ if grep -i '^storage.dynamodb.client.signing-region=' "$PROPS" 1>/dev/null; then
 fi
 
 if grep -i '^storage.dynamodb.use-titan-ids=' "$PROPS" 1>/dev/null; then
-    sed -i.bckp 's#storage.dynamodb.use-titan-ids=.*#storage.dynamodb.use-titan-ids='${USE_TITAN}'#' ${PROPS}
+    sed -i.bckp 's#storage.dynamodb.use-titan-ids=.*#storage.dynamodb.use-titan-ids='${USE_TITAN_IDS}'#' ${PROPS}
  else
-    echo "storage.dynamodb.use-titan-ids=$USE_TITAN" >> ${PROPS}
+    echo "storage.dynamodb.use-titan-ids=$USE_TITAN_IDS" >> ${PROPS}
 fi
 
 if grep -i '^ids.store-name=' "$PROPS" 1>/dev/null; then
-    sed -i.bckp 's#ids.store-name=.*#ids.store-name='${USE_OLD_TITAN}'#' ${PROPS}
+    sed -i.bckp 's#ids.store-name=.*#ids.store-name='${TITAN_IDS}'#' ${PROPS}
  else
-    echo "ids.store-name=$USE_OLD_TITAN" >> ${PROPS}
+    echo "ids.store-name=$TITAN_IDS" >> ${PROPS}
 fi
 
 
