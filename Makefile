@@ -1,12 +1,12 @@
 ifeq ($(TARGET),rhel)
   DOCKERFILE := Dockerfile.rhel
-  REGISTRY := push.registry.devshift.net/osio-prod
+  REPOSITORY := openshiftio/rhel-bayesian-gremlin
 else
   DOCKERFILE := Dockerfile
-  REGISTRY := push.registry.devshift.net
+  REPOSITORY := openshiftio/bayesian-gremlin
 endif
 
-REPOSITORY?=bayesian/gremlin
+REGISTRY := quay.io
 DEFAULT_TAG=latest
 
 .PHONY: all docker-build fast-docker-build get-image-name get-image-repository
