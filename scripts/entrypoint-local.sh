@@ -25,6 +25,11 @@ sed -i.bckp 's#serializedResponseTimeout: .*#serializedResponseTimeout: '${RESPO
 sed -i.bckp 's#storage.dynamodb.client.endpoint=.*#storage.dynamodb.client.endpoint=http://'$DYNAMO_HOST':'$DYNAMO_PORT'#' ${PROPS}
 
 sed -i.bckp 's#storage.backend=.*#storage.backend='${STORAGE_BACKEND}'#' ${PROPS}
+
+if [ -n "$MAX_CONTENT_LENGTH" ]; then
+    sed -i.bckp 's#maxContentLength: .*#maxContentLength: '$MAX_CONTENT_LENGTH'#' ${GREMLIN_CONF}
+fi
+
 if [ -n "$DYNAMODB_PREFIX" ]; then
     sed -i.bckp 's#storage.dynamodb.prefix=.*#storage.dynamodb.prefix='$DYNAMODB_PREFIX'#' ${PROPS}
 fi

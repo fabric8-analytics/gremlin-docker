@@ -41,6 +41,10 @@ if [ -n "$DYNAMODB_CLIENT_CREDENTIALS_CONSTRUCTOR_ARGS" ]; then
     sed -i.bckp 's#storage.dynamodb.client.credentials.constructor-args=.*#storage.dynamodb.client.credentials.constructor-args='${DYNAMODB_CLIENT_CREDENTIALS_CONSTRUCTOR_ARGS}'#' ${PROPS}
 fi
 
+if [ -n "$MAX_CONTENT_LENGTH" ]; then
+    sed -i.bckp 's#maxContentLength: .*#maxContentLength: '$MAX_CONTENT_LENGTH'#' ${GREMLIN_CONF}
+fi
+
 if [ -n "$RESPONSE_TIMEOUT" ]; then
     sed -i.bckp 's#serializedResponseTimeout: .*#serializedResponseTimeout: '${RESPONSE_TIMEOUT}'#' ${GREMLIN_CONF}
 fi
