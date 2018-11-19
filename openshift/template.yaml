@@ -49,6 +49,8 @@ objects:
             value: ${REST_VALUE}
           - name: DYNAMODB_CLIENT_ENDPOINT
             value: ${DYNAMODB_CLIENT_ENDPOINT}
+          - name: MAX_CONTENT_LENGTH 
+            value: ${MAX_CONTENT_LENGTH_VALUE}
           - name: DYNAMODB_PREFIX
             valueFrom:
                configMapKeyRef:
@@ -118,6 +120,10 @@ parameters:
 - description: Change the channelizer being used to deploy the gremlin server. Set this to "1" for HTTP channelizer, and "0" for WebSocket channelizer. Defaults to "0" i.e. WebSocket.
   name: REST_VALUE
   value: "0"
+- description: Max Content Length Value for Gremlin HTTP Channelizer
+  name: MAX_CONTENT_LENGTH_VALUE 
+  required: true
+  value: "1048576"
 - description: MEMORY_LIMIT
   name: MEMORY_LIMIT
   required: true
