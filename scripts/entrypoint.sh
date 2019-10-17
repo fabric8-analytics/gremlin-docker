@@ -10,7 +10,7 @@ STORAGE_BACKEND=com.amazon.janusgraph.diskstorage.dynamodb.DynamoDBStoreManager
 USE_TITAN_IDS=true
 TITAN_IDS=titan_ids
 
-export JAVA_OPTIONS=${JAVA_OPTIONS:- -Xms512m -Xmx1400m}
+export JAVA_OPTIONS=${JAVA_OPTIONS:- -XX:+PrintFlagsFinal -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap}
 
 export JAVA_OPTIONS="$JAVA_OPTIONS -javaagent:/opt/dynamodb/$SERVER_DIR/lib/jamm-0.3.0.jar"
 
