@@ -1,4 +1,3 @@
-
 ifeq ($(TARGET),rhel)
   DOCKERFILE := Dockerfile.rhel
   REPOSITORY := openshiftio/rhel-bayesian-gremlin
