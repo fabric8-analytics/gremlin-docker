@@ -20,7 +20,7 @@ objects:
       protocol: TCP
       targetPort: 8182
     selector:
-      service: bayesian-gremlin-${CHANNELIZER}
+      service: bayesian-gremlin-${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
