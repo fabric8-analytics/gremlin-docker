@@ -71,6 +71,8 @@ objects:
                secretKeyRef:
                  name: aws-dynamodb
                  key: aws_region
+          - name: JAVA_OPTIONS
+            value: ${JAVA_OPTIONS}
           image: "${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}"
           imagePullPolicy: Always
           name: bayesian-gremlin
@@ -167,4 +169,10 @@ parameters:
   displayName: Query administration region
   required: false
   name: QUERY_ADMINISTRATION_REGION
+  value: ""
+
+- description: JVM Options
+  displayName: JVM Options
+  required: false
+  name: JAVA_OPTIONS
   value: ""
