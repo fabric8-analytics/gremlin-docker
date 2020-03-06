@@ -11,8 +11,8 @@ objects:
   kind: Service
   metadata:
     labels:
-      service: bayesian-gremlin-${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
-    name: bayesian-gremlin-${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+      service: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+    name: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
   spec:
     ports:
     - name: "8182"
@@ -20,16 +20,16 @@ objects:
       protocol: TCP
       targetPort: 8182
     selector:
-      service: bayesian-gremlin-${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+      service: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
     labels:
-      service: bayesian-gremlin-${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
-    name: bayesian-gremlin-${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+      service: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+    name: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
   spec:
     selector:
-      service: bayesian-gremlin-${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+      service: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
     strategy:
       type: Rolling
       rollingParams:
@@ -41,7 +41,7 @@ objects:
     template:
       metadata:
         labels:
-          service: bayesian-gremlin-${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+          service: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
       spec:
         containers:
         - env:
@@ -54,6 +54,8 @@ objects:
                configMapKeyRef:
                  name: bayesian-config
                  key: dynamodb-prefix
+          - name: DYNAMODB_INSTANCE_PREFIX
+            value: ${DYNAMODB_INSTANCE_PREFIX}
           - name: DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME
             value: ${DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME}
           - name: AWS_ACCESS_KEY_ID
@@ -113,6 +115,10 @@ parameters:
   name: DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME
   required: true
   value: "com.amazonaws.auth.DefaultAWSCredentialsProviderChain"
+- description: Value of the 'storage.dynamodb.prefix' property in dynamodb.properties along with DYNAMODB_PREFIX
+  name: DYNAMODB_INSTANCE_PREFIX
+  required: false
+  value: ""
 - description: Value of the 'storage.dynamodb.client.endpoint' property in dynamodb.properties
   name: DYNAMODB_CLIENT_ENDPOINT
   required: false
