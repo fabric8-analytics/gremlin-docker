@@ -61,17 +61,17 @@ objects:
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
-                name: aws-dynamodb
+                name: ${DYNAMODB_SECRET_NAME}
                 key: aws_access_key_id
           - name: AWS_SECRET_ACCESS_KEY
             valueFrom:
               secretKeyRef:
-                name: aws-dynamodb
+                name: ${DYNAMODB_SECRET_NAME}
                 key: aws_secret_access_key
           - name: AWS_DEFAULT_REGION
             valueFrom:
                secretKeyRef:
-                 name: aws-dynamodb
+                 name: ${DYNAMODB_SECRET_NAME}
                  key: aws_region
           - name: JAVA_OPTIONS
             value: ${JAVA_OPTIONS}
@@ -123,6 +123,10 @@ parameters:
   name: DYNAMODB_CLIENT_ENDPOINT
   required: false
   value: "https://dynamodb.us-east-1.amazonaws.com"
+- description: DynamoDB secret name that used to retrive aws key/secret/region. 
+  name: DYNAMODB_SECRET_NAME
+  required: false
+  value: "aws-dynamodb"
 - description: Change the channelizer being used to deploy the gremlin server. Set this to "1" for HTTP channelizer, and "0" for WebSocket channelizer. Defaults to "0" i.e. WebSocket.
   name: REST_VALUE
   value: "0"
