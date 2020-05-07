@@ -123,17 +123,17 @@ parameters:
   name: DYNAMODB_CLIENT_ENDPOINT
   required: false
   value: "https://dynamodb.us-east-1.amazonaws.com"
-- description: DynamoDB secret name that used to retrive aws key/secret/region.
+- description: DynamoDB secret name that used to retrive aws key/secret/region. 
   name: DYNAMODB_SECRET_NAME
   required: false
   value: "aws-dynamodb"
-- description: Key of configmap that helps to define prefix for DynamoDB table name.
+- description: Key of configmap that helps to define prefix for DynamoDB table name. 
   name: DYNAMODB_PREFIX_KEY
   required: false
   value: "dynamodb-prefix"
 - description: Change the channelizer being used to deploy the gremlin server. Set this to "1" for HTTP channelizer, and "0" for WebSocket channelizer. Defaults to "0" i.e. WebSocket.
   name: REST_VALUE
-  value: "1"
+  value: "0"
 - description: MEMORY_LIMIT
   name: MEMORY_LIMIT
   required: true
@@ -153,7 +153,7 @@ parameters:
 - description: Name of the channelizer being used. Setting this will not change the channelizer, this will merely influence the names of OpenShift objects being created. To change the channelizer, see REST_VALUE.
   name: CHANNELIZER
   required: true
-  value: "http"
+  value: ws
 
 - description: Docker registry where the image is
   displayName: Docker registry
@@ -171,7 +171,7 @@ parameters:
   displayName: Image tag
   required: true
   name: IMAGE_TAG
-  value: "latest"
+  value: "1.1.0"
 
 - description: Number of deployment replicas
   displayName: Number of deployment replicas
