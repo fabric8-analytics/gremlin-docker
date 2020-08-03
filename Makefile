@@ -1,5 +1,6 @@
+# fixme: Get rid of rhel prefixed image repo usage
 ifeq ($(TARGET),rhel)
-  DOCKERFILE := Dockerfile.rhel
+  DOCKERFILE := Dockerfile
   REPOSITORY := openshiftio/rhel-bayesian-gremlin
 else
   DOCKERFILE := Dockerfile
