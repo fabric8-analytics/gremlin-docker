@@ -1,8 +1,6 @@
-FROM registry.centos.org/centos/centos:7
+FROM registry.centos.org/centos/centos:7 as builder
 
 MAINTAINER Shubham <shubham@linux.com>
-
-EXPOSE 8182
 
 RUN yum -y install epel-release &&\
     yum -y install git zip unzip awscli &&\
@@ -52,6 +50,19 @@ RUN chmod +x /bin/entrypoint.sh &&\
 ADD scripts/entrypoint-local.sh /bin/entrypoint-local.sh
 RUN chmod +x /bin/entrypoint-local.sh
 
+FROM registry.centos.org/centos/centos:7
+
+MAINTAINER arajkuma@redhat.com
+
+EXPOSE 8182
+
+RUN yum -y install java
+
+ENV JAVA_HOME /usr/lib/jvm/jre-openjdk
+COPY --from=builder /opt/dynamodb/dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.1.0 /opt/dynamodb/dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.1.0
+COPY --from=builder /bin/entrypoint.sh /bin/
 COPY scripts/post-hook.sh /bin/
+COPY --from=builder /bin/entrypoint-local.sh /bin
+WORKDIR /opt/dynamodb
 
 ENTRYPOINT ["/bin/entrypoint.sh"]
