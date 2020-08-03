@@ -50,15 +50,12 @@ RUN chmod +x /bin/entrypoint.sh &&\
 ADD scripts/entrypoint-local.sh /bin/entrypoint-local.sh
 RUN chmod +x /bin/entrypoint-local.sh
 
-FROM registry.centos.org/centos/centos:7
+FROM registry.access.redhat.com/ubi8/openjdk-8:latest
 
 MAINTAINER arajkuma@redhat.com
 
 EXPOSE 8182
 
-RUN yum -y install java
-
-ENV JAVA_HOME /usr/lib/jvm/jre-openjdk
 COPY --from=builder /opt/dynamodb/dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.1.0 /opt/dynamodb/dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.1.0
 COPY --from=builder /bin/entrypoint.sh /bin/
 COPY scripts/post-hook.sh /bin/
