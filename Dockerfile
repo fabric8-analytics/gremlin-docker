@@ -32,10 +32,6 @@ RUN mkdir -p ${M2_DIR}/root &&\
     mkdir -p ${M2_REPO}/org/slf4j/slf4j-api/1.7.21/ &&\
     curl -o ${M2_REPO}/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar
 
-# Install Gremlin Python
-RUN cd dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.1.0 &&\
-    bin/gremlin-server.sh -i org.apache.tinkerpop gremlin-python 3.2.3
-
 ADD scripts/entrypoint.sh /bin/entrypoint.sh
 
 RUN chmod +x /bin/entrypoint.sh &&\
@@ -46,17 +42,26 @@ RUN chmod +x /bin/entrypoint.sh &&\
 ADD scripts/entrypoint-local.sh /bin/entrypoint-local.sh
 RUN chmod +x /bin/entrypoint-local.sh
 
+##############################################################################
 FROM registry.access.redhat.com/ubi8/ubi-minimal
 
 MAINTAINER arajkuma@redhat.com
 
 EXPOSE 8182
 
-RUN microdnf install java-1.8.0-openjdk-headless findutils && microdnf clean all
+# Install JRE
+RUN microdnf install java-1.8.0-openjdk-headless findutils &&\
+    microdnf clean all &&\
+    rm -fr /var/cache/lib/{dnf,rpm}
+
+# Copy artifacts from builder image
 COPY --from=builder /opt/dynamodb/dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.1.0 /opt/dynamodb/dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.1.0
 COPY --from=builder /bin/entrypoint.sh /bin/
 COPY scripts/post-hook.sh /bin/
 COPY --from=builder /bin/entrypoint-local.sh /bin
+
+# Define non root user
+USER 185
 WORKDIR /opt/dynamodb
 
 ENTRYPOINT ["/bin/entrypoint.sh"]
