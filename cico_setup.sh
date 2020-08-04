@@ -20,7 +20,7 @@ load_jenkins_vars() {
 prep() {
     yum -y update
     # install latest docker for multi-stage build
-    (cd /etc/yum.repos.d/ && wget https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/CentOS_7/devel:kubic:libcontainers:stable.repo)
+    (cd /etc/yum.repos.d/ && curl -O -L https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/CentOS_7/devel:kubic:libcontainers:stable.repo)
     yum -y install buildah git
 }
 
