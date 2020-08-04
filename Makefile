@@ -15,10 +15,10 @@ DEFAULT_TAG=latest
 all: fast-docker-build
 
 docker-build:
-	buildah bud --no-cache -t $(REGISTRY)/$(REPOSITORY):$(DEFAULT_TAG) -f $(DOCKERFILE) .
+	docker build --no-cache -t $(REGISTRY)/$(REPOSITORY):$(DEFAULT_TAG) -f $(DOCKERFILE) .
 
 fast-docker-build:
-	buildah bud -t $(REGISTRY)/$(REPOSITORY):$(DEFAULT_TAG) -f $(DOCKERFILE) .
+	docker build -t $(REGISTRY)/$(REPOSITORY):$(DEFAULT_TAG) -f $(DOCKERFILE) .
 
 get-image-name:
 	@echo $(REGISTRY)/$(REPOSITORY):$(DEFAULT_TAG)
