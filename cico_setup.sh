@@ -20,10 +20,8 @@ load_jenkins_vars() {
 prep() {
     yum -y update
     # install latest docker for multi-stage build
-    yum -y install yum-utils
-    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-    yum -y install docker-ce-19.03.12 git
-    systemctl start docker
+    (cd /etc/yum.repos.d/ && wget https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/CentOS_7/devel:kubic:libcontainers:stable.repo)
+    yum -y install buildah git
 }
 
 build_image() {
@@ -31,7 +29,7 @@ build_image() {
     push_registry=$(make get-push-registry)
     # login before build to be able to pull RHEL parent image
     if [ -n "${QUAY_USERNAME}" -a -n "${QUAY_PASSWORD}" ]; then
-        docker login -u ${QUAY_USERNAME} -p ${QUAY_PASSWORD} ${push_registry}
+        buildah login -u ${QUAY_USERNAME} -p ${QUAY_PASSWORD} ${push_registry}
     else
         echo "Could not login, missing credentials for the registry"
         exit 1
@@ -42,8 +40,8 @@ build_image() {
 tag_push() {
     local target=$1
     local source=$2
-    docker tag ${source} ${target}
-    docker push ${target}
+    buildah tag ${source} ${target}
+    buildah push ${target}
 }
 
 push_image() {
