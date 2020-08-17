@@ -19,7 +19,10 @@ load_jenkins_vars() {
 
 prep() {
     yum -y update
-    yum -y install docker git
+    # install latest docker for multi-stage build
+    yum -y install yum-utils
+    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    yum -y install docker-ce-19.03.12 git
     systemctl start docker
 }
 
