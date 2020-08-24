@@ -49,10 +49,13 @@ MAINTAINER arajkuma@redhat.com
 
 EXPOSE 8182
 
+ENV PYTHONDONTWRITEBYTECODE=1
 # Install JRE
-RUN microdnf install java-1.8.0-openjdk-headless findutils &&\
+RUN microdnf install java-1.8.0-openjdk-headless findutils python3 &&\
     microdnf clean all &&\
     rm -fr /var/cache/lib/{dnf,rpm}
+
+RUN pip3 --no-cache-dir install awscli
 
 # Copy artifacts from builder image
 COPY --from=builder /opt/dynamodb/dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.1.0 /opt/dynamodb/dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.1.0
