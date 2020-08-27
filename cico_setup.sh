@@ -67,6 +67,8 @@ push_image() {
         tag_push ${push_registry}/${image_repository}:${short_commit} ${image_name}
     fi
 
+    # uninstall the latest docker until e2e moves to latest
+    yum -y remove docker docker-ce docker-ce-cli
     echo 'CICO: Image pushed, ready to update deployed app'
 }
 
