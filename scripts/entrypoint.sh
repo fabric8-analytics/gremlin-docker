@@ -26,7 +26,7 @@ fi
 
 echo "graph.titan-version=1.1.0-SNAPSHOT" >> ${PROPS}
 
-sed -i.bckp 's#consoleReporter: .*#consoleReporter: {enabled: false}, #' ${GREMLIN_CONF}
+sed -i.bckp 's#consoleReporter: .*#consoleReporter: {enabled: true, interval: 60000}, #' ${GREMLIN_CONF}
 sed -i.bckp 's#csvReporter: .*#csvReporter: {enabled: false}, #' ${GREMLIN_CONF}
 sed -i.bckp 's#jmxReporter: .*#jmxReporter: {enabled: false}, #' ${GREMLIN_CONF}
 sed -i.bckp 's#slf4jReporter: .*#slf4jReporter: {enabled: false}, #' ${GREMLIN_CONF}
