@@ -190,3 +190,9 @@ parameters:
   required: false
   name: JAVA_OPTIONS
   value: ""
+
+- description: Gremlin pool size
+  displayName: Gremlin pool size
+  required: false
+  name: GREMLIN_POOL
+  value: "0"
