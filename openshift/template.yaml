@@ -195,4 +195,4 @@ parameters:
   displayName: Gremlin pool size
   required: false
   name: GREMLIN_POOL
-  value: "0"
+  value: "8"
