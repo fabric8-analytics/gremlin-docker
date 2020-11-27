@@ -12,7 +12,7 @@ TITAN_IDS=titan_ids
 
 export JAVA_OPTIONS=${JAVA_OPTIONS:- -Xms512m -Xmx1400m}
 
-export JAVA_OPTIONS="$JAVA_OPTIONS -javaagent:/metrics/jmx_prometheus_javaagent.jar=8080:/test/config.yaml"
+export JAVA_OPTIONS="$JAVA_OPTIONS -javaagent:/metrics/jmx_prometheus_javaagent.jar=8080:/metrics/config.yaml"
 
 echo "Proceeding with JAVA_OPTIONS=$JAVA_OPTIONS"
 
