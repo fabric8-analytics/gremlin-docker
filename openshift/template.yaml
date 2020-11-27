@@ -19,6 +19,10 @@ objects:
       port: 8182
       protocol: TCP
       targetPort: 8182
+    - name: "8080"
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
     selector:
       service: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
 - apiVersion: v1
