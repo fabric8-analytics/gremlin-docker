@@ -47,7 +47,7 @@ FROM registry.access.redhat.com/ubi8/ubi-minimal
 
 MAINTAINER arajkuma@redhat.com
 
-EXPOSE 8182 8080
+EXPOSE 8182 5000
 
 ENV PYTHONDONTWRITEBYTECODE=1
 # Install JRE
