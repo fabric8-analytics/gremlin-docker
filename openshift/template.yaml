@@ -12,7 +12,7 @@ objects:
   metadata:
     labels:
       service: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
-      monitoring: yes
+      monitoring: enabled
     name: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
   spec:
     ports:
