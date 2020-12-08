@@ -12,6 +12,7 @@ objects:
   metadata:
     labels:
       service: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+      monitoring: yes
     name: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
   spec:
     ports:
@@ -19,6 +20,10 @@ objects:
       port: 8182
       protocol: TCP
       targetPort: 8182
+    - name: metrics
+      port: 5000
+      protocol: TCP
+      targetPort: 5000
     selector:
       service: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
 - apiVersion: v1

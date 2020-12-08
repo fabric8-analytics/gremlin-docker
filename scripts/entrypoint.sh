@@ -12,7 +12,7 @@ TITAN_IDS=titan_ids
 
 export JAVA_OPTIONS=${JAVA_OPTIONS:- -Xms512m -Xmx1400m}
 
-export JAVA_OPTIONS="$JAVA_OPTIONS -javaagent:/opt/dynamodb/$SERVER_DIR/lib/jamm-0.3.0.jar"
+export JAVA_OPTIONS="$JAVA_OPTIONS -javaagent:/metrics/jmx_prometheus_javaagent.jar=5000:/metrics/config.yaml"
 
 echo "Proceeding with JAVA_OPTIONS=$JAVA_OPTIONS"
 
@@ -28,7 +28,7 @@ echo "graph.titan-version=1.1.0-SNAPSHOT" >> ${PROPS}
 
 sed -i.bckp 's#consoleReporter: .*#consoleReporter: {enabled: true, interval: 60000}, #' ${GREMLIN_CONF}
 sed -i.bckp 's#csvReporter: .*#csvReporter: {enabled: false}, #' ${GREMLIN_CONF}
-sed -i.bckp 's#jmxReporter: .*#jmxReporter: {enabled: false}, #' ${GREMLIN_CONF}
+sed -i.bckp 's#jmxReporter: .*#jmxReporter: {enabled: true}, #' ${GREMLIN_CONF}
 sed -i.bckp 's#slf4jReporter: .*#slf4jReporter: {enabled: false}, #' ${GREMLIN_CONF}
 sed -i.bckp 's#gangliaReporter: .*#gangliaReporter: {enabled: false}, #' ${GREMLIN_CONF}
 sed -i.bckp 's#graphiteReporter: .*#graphiteReporter: {enabled: false}} #' ${GREMLIN_CONF}

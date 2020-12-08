@@ -47,7 +47,7 @@ FROM registry.access.redhat.com/ubi8/ubi-minimal
 
 MAINTAINER arajkuma@redhat.com
 
-EXPOSE 8182
+EXPOSE 8182 5000
 
 ENV PYTHONDONTWRITEBYTECODE=1
 # Install JRE
@@ -56,6 +56,9 @@ RUN microdnf install java-1.8.0-openjdk-headless findutils python3 &&\
     rm -fr /var/cache/lib/{dnf,rpm}
 
 RUN pip3 --no-cache-dir install awscli
+
+COPY scripts/config.yaml /metrics/
+RUN curl -o /metrics/jmx_prometheus_javaagent.jar https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.14.0/jmx_prometheus_javaagent-0.14.0.jar
 
 # Copy artifacts from builder image
 COPY --from=builder /opt/dynamodb/dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.1.0 /opt/dynamodb/dynamodb-janusgraph-storage-backend/server/dynamodb-janusgraph-storage-backend-1.1.0
