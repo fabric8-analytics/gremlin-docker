@@ -80,6 +80,8 @@ objects:
                  key: aws_region
           - name: JAVA_OPTIONS
             value: ${JAVA_OPTIONS}
+          - name: DEPLOYMENT_CONTROLLER
+            value: "true"
           image: "${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}"
           imagePullPolicy: Always
           name: bayesian-gremlin
