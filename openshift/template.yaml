@@ -54,6 +54,8 @@ objects:
             value: ${REST_VALUE}
           - name: DYNAMODB_CLIENT_ENDPOINT
             value: ${DYNAMODB_CLIENT_ENDPOINT}
+          - name: THREAD_POOL
+            value: ${THREAD_POOL}
           - name: DYNAMODB_PREFIX
             valueFrom:
                configMapKeyRef:
@@ -153,6 +155,10 @@ parameters:
   name: CPU_LIMIT
   required: true
   value: "1000m"
+- description: THREAD_POOL
+  name: THREAD_POOL
+  required: false
+  value: "2"
 - description: CPU_REQUEST
   name: CPU_REQUEST
   required: true
