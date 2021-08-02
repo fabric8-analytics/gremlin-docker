@@ -158,7 +158,7 @@ parameters:
 - description: THREAD_POOL
   name: THREAD_POOL
   required: false
-  value: "2"
+  value: "1"
 - description: CPU_REQUEST
   name: CPU_REQUEST
   required: true
