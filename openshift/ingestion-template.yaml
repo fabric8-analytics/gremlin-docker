@@ -1,0 +1,205 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: bayesian-gremlin-server
+metadata:
+  name: bayesian-gremlin-server
+  annotations:
+    description: bayesian-gremlin-server
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      service: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+      monitoring: enabled
+    name: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+  spec:
+    ports:
+    - name: "8182"
+      port: 8182
+      protocol: TCP
+      targetPort: 8182
+    - name: metrics
+      port: 5000
+      protocol: TCP
+      targetPort: 5000
+    selector:
+      service: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      service: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+    name: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+  spec:
+    selector:
+      service: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+    strategy:
+      type: Rolling
+      rollingParams:
+        post:
+          failurePolicy: ignore
+          execNewPod:
+            containerName: bayesian-gremlin
+            command: ["post-hook.sh"]
+    template:
+      metadata:
+        labels:
+          service: bayesian-gremlin-${DYNAMODB_INSTANCE_PREFIX}${CHANNELIZER}${QUERY_ADMINISTRATION_REGION}
+      spec:
+        containers:
+        - env:
+          - name: REST
+            value: ${REST_VALUE}
+          - name: DYNAMODB_CLIENT_ENDPOINT
+            value: ${DYNAMODB_CLIENT_ENDPOINT}
+          - name: DYNAMODB_PREFIX
+            valueFrom:
+               configMapKeyRef:
+                 name: bayesian-config
+                 key: ${DYNAMODB_PREFIX_KEY}
+          - name: DYNAMODB_INSTANCE_PREFIX
+            value: ${DYNAMODB_INSTANCE_PREFIX}
+          - name: DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME
+            value: ${DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME}
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: ${DYNAMODB_SECRET_NAME}
+                key: aws_access_key_id
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: ${DYNAMODB_SECRET_NAME}
+                key: aws_secret_access_key
+          - name: AWS_DEFAULT_REGION
+            valueFrom:
+               secretKeyRef:
+                 name: ${DYNAMODB_SECRET_NAME}
+                 key: aws_region
+          - name: JAVA_OPTIONS
+            value: ${JAVA_OPTIONS}
+          - name: DEPLOYMENT_CONTROLLER
+            value: "true"
+          image: "${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}"
+          imagePullPolicy: Always
+          name: bayesian-gremlin
+          ports:
+          - containerPort: 8182
+            protocol: TCP
+          resources:
+            requests:
+              memory: ${MEMORY_REQUEST}
+              cpu: ${CPU_REQUEST}
+            limits:
+              memory: ${MEMORY_LIMIT}
+              cpu: ${CPU_LIMIT}
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            timeoutSeconds: 30
+            failureThreshold: 3
+            successThreshold: 1
+            tcpSocket:
+              port: 8182
+          readinessProbe:
+            tcpSocket:
+              port: 8182
+            failureThreshold: 3
+            successThreshold: 1
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            timeoutSeconds: 30
+        restartPolicy: Always
+    test: false
+    triggers:
+    - type: ConfigChange
+    replicas: ${{REPLICAS}}
+
+parameters:
+- description: Value of the 'storage.dynamodb.client.credentials.class-name' property in dynamodb.properties
+  name: DYNAMODB_CLIENT_CREDENTIALS_CLASS_NAME
+  required: true
+  value: "com.amazonaws.auth.DefaultAWSCredentialsProviderChain"
+- description: Value of the 'storage.dynamodb.prefix' property in dynamodb.properties along with DYNAMODB_PREFIX
+  name: DYNAMODB_INSTANCE_PREFIX
+  required: false
+  value: ""
+- description: Value of the 'storage.dynamodb.client.endpoint' property in dynamodb.properties
+  name: DYNAMODB_CLIENT_ENDPOINT
+  required: false
+  value: "https://dynamodb.us-east-1.amazonaws.com"
+- description: DynamoDB secret name that used to retrive aws key/secret/region.
+  name: DYNAMODB_SECRET_NAME
+  required: false
+  value: "aws-dynamodb"
+- description: Key of configmap that helps to define prefix for DynamoDB table name.
+  name: DYNAMODB_PREFIX_KEY
+  required: false
+  value: "dynamodb-prefix"
+- description: Change the channelizer being used to deploy the gremlin server. Set this to "1" for HTTP channelizer, and "0" for WebSocket channelizer. Defaults to "0" i.e. WebSocket.
+  name: REST_VALUE
+  value: "1"
+- description: MEMORY_LIMIT
+  name: MEMORY_LIMIT
+  required: true
+  value: "1536Mi"
+- description: MEMORY_REQUEST
+  name: MEMORY_REQUEST
+  required: true
+  value: "1536Mi"
+- description: CPU_LIMIT
+  name: CPU_LIMIT
+  required: true
+  value: "1000m"
+- description: CPU_REQUEST
+  name: CPU_REQUEST
+  required: true
+  value: "500m"
+- description: Name of the channelizer being used. Setting this will not change the channelizer, this will merely influence the names of OpenShift objects being created. To change the channelizer, see REST_VALUE.
+  name: CHANNELIZER
+  required: true
+  value: "http"
+
+- description: Docker registry where the image is
+  displayName: Docker registry
+  required: true
+  name: DOCKER_REGISTRY
+  value: "quay.io"
+
+- description: Docker image to use
+  displayName: Docker image
+  required: true
+  name: DOCKER_IMAGE
+  value: "openshiftio/bayesian-gremlin"
+
+- description: Image tag
+  displayName: Image tag
+  required: true
+  name: IMAGE_TAG
+  value: "latest"
+
+- description: Number of deployment replicas
+  displayName: Number of deployment replicas
+  required: true
+  name: REPLICAS
+  value: "1"
+
+- description: Region for service - "ingestion" or ""
+  displayName: Query administration region
+  required: false
+  name: QUERY_ADMINISTRATION_REGION
+  value: ""
+
+- description: JVM Options
+  displayName: JVM Options
+  required: false
+  name: JAVA_OPTIONS
+  value: ""
+
+- description: Gremlin pool size
+  displayName: Gremlin pool size
+  required: false
+  name: GREMLIN_POOL
+  value: "8"
