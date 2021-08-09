@@ -21,6 +21,12 @@ jobs:
       uses: instrumenta/kubeval-action@master
       with:
           files: blueprint.yaml
+    - name: Run oc process
+      run: oc process --local -f openshift/ingestion-template.yaml -o yaml > blueprint.yaml
+    - name: validate openshift yaml
+      uses: instrumenta/kubeval-action@master
+      with:
+          files: blueprint.yaml
   build-docker-image:
     runs-on: ubuntu-latest
     steps:
