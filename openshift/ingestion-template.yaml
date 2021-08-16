@@ -156,7 +156,7 @@ parameters:
 - description: CPU_REQUEST
   name: CPU_REQUEST
   required: true
-  value: "1000m"
+  value: "500m"
 - description: Name of the channelizer being used. Setting this will not change the channelizer, this will merely influence the names of OpenShift objects being created. To change the channelizer, see REST_VALUE.
   name: CHANNELIZER
   required: true
