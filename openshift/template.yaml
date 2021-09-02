@@ -83,7 +83,7 @@ objects:
           - name: JAVA_OPTIONS
             value: ${JAVA_OPTIONS}
           - name: DEPLOYMENT_CONTROLLER
-            value: "true"
+            value: ${DEPLOYMENT_CONTROLLER}
           image: "${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}"
           imagePullPolicy: Always
           name: bayesian-gremlin
@@ -209,3 +209,9 @@ parameters:
   required: false
   name: GREMLIN_POOL
   value: "8"
+
+- description: DEPLOYMENT_CONTROLLER
+  displayName: DEPLOYMENT_CONTROLLER
+  required: false
+  name: DEPLOYMENT_CONTROLLER
+  value: "false"
